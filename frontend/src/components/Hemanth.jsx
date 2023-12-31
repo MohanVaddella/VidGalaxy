@@ -1,7 +1,6 @@
 // Hemanth.jsx
-import React, { useState } from 'react';
-import TheaterModal from './TheaterModel';
-
+import React, { useState } from "react";
+import TheaterModal from "./TheaterModel";
 
 function Hemanth() {
   const [videos, setVideos] = useState([]);
@@ -38,11 +37,11 @@ function Hemanth() {
   };
 
   return (
-
-
-
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <label htmlFor="upload" className="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer">
+      <label
+        htmlFor="upload"
+        className="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
+      >
         Upload Video
       </label>
       <input
@@ -56,7 +55,11 @@ function Hemanth() {
 
       <div className="mt-8 flex flex-wrap justify-center">
         {videos.map((video) => (
-          <div key={video.id} className="m-2 w-64" onClick={() => handleVideoClick(video)}>
+          <div
+            key={video.id}
+            className="m-2 w-64"
+            onClick={() => handleVideoClick(video)}
+          >
             <div className="relative group">
               <video
                 src={URL.createObjectURL(video.file)}
@@ -86,7 +89,6 @@ function Hemanth() {
         />
       )}
     </div>
-
   );
 }
 

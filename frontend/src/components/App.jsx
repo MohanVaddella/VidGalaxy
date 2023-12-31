@@ -9,6 +9,10 @@ import Hemanth from "./Hemanth";
 import TheaterModel from "./TheaterModel";
 import NotFound from "./NotFound";
 import Home from "./Home";
+import Profile from "./Profile";
+
+/** auth middleware */
+import { AuthorizeUser, ProtectRoute } from "../middleware/auth";
 
 // Use the Register component in your application
 function App() {
@@ -20,10 +24,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/changepassword" element={<ChangePassword />} />
-        <Route path="/videoupload" element={<VideoUpload />} />
+        <Route
+          path="/videoupload"
+          element={
+            <ProtectRoute>
+              <VideoUpload />
+            </ProtectRoute>
+          }
+        />
         <Route path="/hemanth" element={<Hemanth />} />
         <Route path="/theatermodel" element={<TheaterModel />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Add other components based on the route */}
       </Routes>

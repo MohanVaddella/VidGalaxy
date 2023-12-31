@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const TheaterModal = ({ selectedVideo, videos, onClose }) => {
   const [currentVideo, setCurrentVideo] = useState(selectedVideo);
@@ -22,7 +22,12 @@ const TheaterModal = ({ selectedVideo, videos, onClose }) => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
           <div className="h-4/5 flex justify-center items-center bg-black">
@@ -47,8 +52,12 @@ const TheaterModal = ({ selectedVideo, videos, onClose }) => {
                     src={URL.createObjectURL(video.file)}
                     className="absolute inset-0 w-full h-full object-cover"
                     playsInline
-                    onMouseOver={(e) => { e.target.play() }} // Play on hover
-                    onMouseOut={(e) => { e.target.pause() }} // Pause on mouse out
+                    onMouseOver={(e) => {
+                      e.target.play();
+                    }} // Play on hover
+                    onMouseOut={(e) => {
+                      e.target.pause();
+                    }} // Pause on mouse out
                   />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                     <svg

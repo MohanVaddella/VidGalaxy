@@ -1,12 +1,48 @@
-import React, { useState } from "react";
-import EyeShow from "../images/pass-show.png";
-import EyeHide from "../images/pass-hide.png";
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import EyeShow from "../assets/pass-show.png";
+import EyeHide from "../assets/pass-hide.png";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useFormik } from "formik";
+import { resetPasswordValidation } from "../helper/validate";
+import { resetPassword } from "../helper/helper";
+import { useAuthStore } from "../store/store";
+import { useNavigate, Navigate } from "react-router-dom";
+import useFetch from "../hooks/fetch.hook";
 
 const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const { username } = useAuthStore((state) => state.auth);
+  const navigate = useNavigate();
+  const [{ isLoading, apiData, status, serverError }] =
+    useFetch("createResetSession");
+
+  const formik = useFormik({
+    initialValues: {
+      password: "",
+      confirmPassword: "",
+    },
+    validate: resetPasswordValidation,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      // Handle password change logic here
+      let resetPromise = resetPassword({ username, password: values.password });
+
+      toast.promise(resetPromise, {
+        loading: "Updating...!",
+        success: <b>Reset Successfully...!</b>,
+        error: <b>Could not Reset!</b>,
+      });
+
+      resetPromise.then(function () {
+        navigate("/login");
+      });
+    },
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -16,8 +52,15 @@ const ChangePassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  if (isLoading) return <h1 className="text-2xl font-bold">isLoading</h1>;
+  if (serverError)
+    return <h1 className="text-xl text-red-500">{serverError.message}</h1>;
+  if (status && status !== 201)
+    return <Navigate to={"/login"} replace={true}></Navigate>;
+
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <Header />
       <section className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -36,6 +79,7 @@ const ChangePassword = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
+                    {...formik.getFieldProps("password")}
                     name="password"
                     id="password"
                     placeholder="Your new secret"
@@ -63,6 +107,7 @@ const ChangePassword = () => {
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
+                    {...formik.getFieldProps("confirm-password")}
                     name="confirm-password"
                     id="confirm-password"
                     placeholder="Re-enter new secret"
@@ -78,31 +123,6 @@ const ChangePassword = () => {
                     className="pass-icon cursor-pointer absolute top-2 right-2"
                     alt="Toggle Confirm Password Visibility"
                   />
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="newsletter"
-                    aria-describedby="newsletter"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    required
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="newsletter"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
-                    I accept the{" "}
-                    <a
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
-                    >
-                      Terms and Conditions
-                    </a>
-                  </label>
                 </div>
               </div>
               <button
