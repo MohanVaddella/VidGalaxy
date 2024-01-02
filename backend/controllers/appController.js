@@ -239,6 +239,31 @@ export async function resetPassword(req, res){
 }
 
 
+export const fileUpload = async (req, res) => {
+    try {
+        console.log("req files", req.file);
 
+        if (!req?.file) {
+            return res.status(403).json({ status: false, error: "Please upload video" });
+        }
 
+        console.log("req?.file", req?.file);
+
+        let data = {};
+
+        if (!!req?.file) {
+            data = {
+                url: req.file.location,
+                type: req.file.mimetype,
+            };
+        }
+
+        return res.json({
+            data: data,
+            status: true,
+        });
+    } catch (error) {
+        return res.status(403).json({ status: false, error: error.message });
+    }
+};
 

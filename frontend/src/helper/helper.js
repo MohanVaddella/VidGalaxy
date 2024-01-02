@@ -34,10 +34,11 @@ export async function getUser({ username }){
 }
 
 /** register user function  */
-export async function registerUser(credentials){
+export async function registerUser(values){
     try {
-        const { data : { msg }, status } = await axios.post('/api/register', credentials);
-        let { username, email } = credentials;
+        const { data : { msg }, status } = await axios.post('/api/register', values);
+        
+        let { username, email } = values;
 
         /** send email */
         if(status === 201){

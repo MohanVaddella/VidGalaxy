@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { authenticate } from "./helper";
 
 /** validate register page  */
@@ -15,9 +14,9 @@ export async function registerValidation(values) {
 // validate username
 function usernameVerify(error = {}, values) {
   if (!values.username) {
-    error.username = toast.error("Username Required...!");
+    error.username = "Username Required...!";
   } else if (values.username.includes(" ")) {
-    error.username = toast.error("Invalid Username...!");
+    error.username = "Invalid Username...!";
   }
 
   return error;
@@ -26,17 +25,17 @@ function usernameVerify(error = {}, values) {
 // Validate password
 function passwordVerify(error = {}, values) {
   if (!values.password) {
-    error.password = toast.error("Password is required...!");
+    error.password = "Password is required...!";
   } else if (values.password.includes(" ")) {
-    error.password = toast.error("Wrong Password...!");
+    error.password = "Wrong Password...!";
   } else if (values.password.length < 8) {
-    error.password = toast.error("Password must be more than 8 characters");
+    error.password = "Password must be more than 8 characters";
   } else if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$&*%])[A-Za-z\d!@#$&*%]{8,14}$/.test(
       values.password
     )
   ) {
-    error.password = toast.error("Password must have special characters...!");
+    error.password = "Password must have special characters...!";
   }
   return error;
 }
@@ -44,9 +43,9 @@ function passwordVerify(error = {}, values) {
 // validate confirmPassword
 function confirmPasswordVerify(error = {}, values) {
   if (!values.confirmPassword) {
-    error.confirmPassword = toast.error("Confirm Password is required...!");
+    error.confirmPassword = "Confirm Password is required...!";
   } else if (values.confirmPassword !== values.password) {
-    error.confirmPassword = toast.error("Passwords do not match...!");
+    error.confirmPassword = "Passwords do not match...!";
   }
   return error;
 }
@@ -54,11 +53,11 @@ function confirmPasswordVerify(error = {}, values) {
 // validate email
 function emailVerify(error = {}, values) {
   if (!values.email) {
-    error.email = toast.error("Email Required...!");
+    error.email = "Email Required...!";
   } else if (values.email.includes(" ")) {
-    error.email = toast.error("Wrong Email...!");
+    error.email = "Wrong Email...!";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    error.email = toast.error("Invalid email address...!");
+    error.email = "Invalid email address...!";
   }
 
   return error;
@@ -82,7 +81,7 @@ async function usernameValidate(values) {
     const { status } = await authenticate(values.username);
 
     if (status !== 201) {
-      errors.exist = toast.error("User does not exist...!");
+      errors.exist = "User does not exist...!";
     }
   }
 
@@ -103,7 +102,7 @@ export async function resetPasswordValidation(values) {
   const errors = passwordVerify({}, values);
 
   if (values.password !== values.confirmPassword) {
-    errors.exist = toast.error("Password not match...!");
+    errors.exist = "Password not match...!";
   }
 
   return errors;

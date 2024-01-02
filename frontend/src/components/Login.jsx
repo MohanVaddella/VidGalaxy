@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const setUsername = useAuthStore((state) => state.setUsername);
   const { username } = useAuthStore((state) => state.auth);
-  const [{ isLoading, apiData, serverError }] = useFetch(`/user/${username}`);
+  const [{ isLoading, apiData, serverError }] = useFetch(`user/${username}`);
   const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
@@ -40,7 +40,6 @@ const Login = () => {
         localStorage.setItem("token", token);
         navigate("/profile");
       });
-      // Add logic to handle form submission, including the profile picture
     },
   });
 

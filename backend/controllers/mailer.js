@@ -5,28 +5,26 @@ import ENV from '../config.js';
 
 // https://ethereal.email/create
 
-/* let nodeConfig = {
-    host: "smtp.forwardemail.net",
-    port: 465,
-    secure: true,
-    auth: {
-    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-        user: ENV.EMAIL,
-        pass: ENV.PASSWORD,
-    }
-} */
-
 let nodeConfig = {
-    service : 'gmail',
-    auth : {
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
         user: ENV.EMAIL,
         pass: ENV.PASSWORD,
     }
 }
 
+/* let nodeConfig = {
+    service : 'gmail',
+    auth : {
+        user: ENV.EMAIL,
+        pass: ENV.PASSWORD,
+    }
+} */
+
 let transporter = nodemailer.createTransport(nodeConfig);
 
-/* let transporter = nodemailer.createTransport(nodeConfig); */
 
 let MailGenerator = new Mailgen({
     theme: "default",
@@ -70,7 +68,7 @@ export const registerMail = async (req, res) => {
     // send mail
     transporter.sendMail(message)
         .then(() => {
-            return res.status(200).send({ msg : "You should receive an email from us. "})
+            return res.status(200).send({ msg : "You should receive an email from us."})
         })
         .catch(error => {
             return res.status(500).send({ error })

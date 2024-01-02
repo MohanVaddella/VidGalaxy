@@ -39,7 +39,6 @@ const Register = () => {
       registerPromise.then(function () {
         navigate("/login");
       });
-      // Add logic to handle form submission, including the profile picture
     },
   });
   const [showPassword, setShowPassword] = useState(false);
