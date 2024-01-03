@@ -98,7 +98,7 @@ export async function login(req, res){
             .then(user => {
                 bcrypt.compare(password, user.password)
                     .then(passwordCheck => {
-                        if(!passwordCheck) return res.status(400).send({ error: "Don't have Password"});
+                        if(!passwordCheck) return res.status(400).send({ error: "Incorrect password. Please try again."});
 
                         // create jwt token
                         const token = jwt.sign({
@@ -114,11 +114,11 @@ export async function login(req, res){
 
                     })
                     .catch(error => {
-                        return res.status(400).send({ error: "Password does not Match"})
+                        return res.status(400).send({ error})
                     })
             })
             .catch( error => {
-                return res.status(404).send({ error : "Username not Found"});
+                return res.status(404).send({ error});
             })
     } catch (error) {
         return res.status(500).send({error});

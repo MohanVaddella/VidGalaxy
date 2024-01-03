@@ -27,19 +27,26 @@ const Login = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      values = await Object.assign(values);
-      setUsername(values.username);
-      let loginPromise = verifyPassword(values);
-      toast.promise(loginPromise, {
-        loading: "Trying to Login...",
-        success: <b>Login Successful</b>,
-        error: <b>Could not Login.</b>,
-      });
-      loginPromise.then((res) => {
-        let { token } = res.data;
-        localStorage.setItem("token", token);
-        navigate("/profile");
-      });
+      try {
+        values = await Object.assign(values);
+        setUsername(values.username);
+        let loginPromise = verifyPassword(values);
+        loginPromise.then((res) => {
+          if (res.success) {
+            toast.success("Login Successful");
+            let { token } = res.data;
+            localStorage.setItem("token", token);
+            navigate("/profile");
+          } else {
+            // Display a generic error message for unsuccessful login
+            console.error("Login error:", res.error);
+            toast.error("Could not Login");
+          }
+        });
+      } catch (error) {
+        console.error("Login error:", error);
+        toast.error("Could not Login");
+      }
     },
   });
 

@@ -12,55 +12,55 @@ export async function registerValidation(values) {
 }
 
 // validate username
-function usernameVerify(error = {}, values) {
+function usernameVerify(errors = {}, values) {
   if (!values.username) {
-    error.username = "Username Required...!";
+    errors.username = "Username Required...!";
   } else if (values.username.includes(" ")) {
-    error.username = "Invalid Username...!";
+    errors.username = "Invalid Username...!";
   }
 
-  return error;
+  return errors;
 }
 
 // Validate password
-function passwordVerify(error = {}, values) {
+async function passwordVerify(errors = {}, values) {
   if (!values.password) {
-    error.password = "Password is required...!";
+    errors.password = "Password is required...!";
   } else if (values.password.includes(" ")) {
-    error.password = "Wrong Password...!";
+    errors.password = "Wrong Password...!";
   } else if (values.password.length < 8) {
-    error.password = "Password must be more than 8 characters";
+    errors.password = "Password must be more than 8 characters";
   } else if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$&*%])[A-Za-z\d!@#$&*%]{8,14}$/.test(
       values.password
     )
   ) {
-    error.password = "Password must have special characters...!";
+    errors.password = "Password must have special characters...!";
   }
-  return error;
+  return errors;
 }
 
 // validate confirmPassword
-function confirmPasswordVerify(error = {}, values) {
+function confirmPasswordVerify(errors = {}, values) {
   if (!values.confirmPassword) {
-    error.confirmPassword = "Confirm Password is required...!";
+    errors.confirmPassword = "Confirm Password is required...!";
   } else if (values.confirmPassword !== values.password) {
-    error.confirmPassword = "Passwords do not match...!";
+    errors.confirmPassword = "Passwords do not match...!";
   }
-  return error;
+  return errors;
 }
 
 // validate email
-function emailVerify(error = {}, values) {
+function emailVerify(errors = {}, values) {
   if (!values.email) {
-    error.email = "Email Required...!";
+    errors.email = "Email Required...!";
   } else if (values.email.includes(" ")) {
-    error.email = "Wrong Email...!";
+    errors.email = "Wrong Email...!";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    error.email = "Invalid email address...!";
+    errors.email = "Invalid email address...!";
   }
 
-  return error;
+  return errors;
 }
 
 /** validate login page */
@@ -91,6 +91,15 @@ async function usernameValidate(values) {
 // validate password
 async function passwordValidate(values) {
   const errors = passwordVerify({}, values);
+
+  if (values.password) {
+    // check password correct or not
+    const { status } = await authenticate(values.password);
+
+    if (status !== 201) {
+      errors.exist = "Wrong Password...!";
+    }
+  }
 
   return errors;
 }

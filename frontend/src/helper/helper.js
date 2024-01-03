@@ -57,11 +57,19 @@ export async function verifyPassword({ username, password}){
     try {
         if(username){
             const { data } = await axios.post('/api/login', { username, password })
-            return Promise.resolve({ data });
+            return Promise.resolve({ data, success: true });
         }
     } catch (error) {
-        return Promise.reject({ error: "Password doesn't Match...!"})
-    }
+        // Handle the error here
+        /* if (error.response && error.response.status === 400) {
+          // The server responded with a bad request (400), indicating incorrect password
+          return Promise.reject({ error: "Wrong password. Please try again." });
+        } else {
+          // Handle other errors
+          return Promise.reject({ error: "An error occurred. Please try again later." });
+        } */
+        return Promise.resolve({ error, success: false });
+      }
 }
 
 /** update user function */
