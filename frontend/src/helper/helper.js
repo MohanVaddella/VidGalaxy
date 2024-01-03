@@ -61,15 +61,8 @@ export async function verifyPassword({ username, password}){
         }
     } catch (error) {
         // Handle the error here
-        /* if (error.response && error.response.status === 400) {
-          // The server responded with a bad request (400), indicating incorrect password
-          return Promise.reject({ error: "Wrong password. Please try again." });
-        } else {
-          // Handle other errors
-          return Promise.reject({ error: "An error occurred. Please try again later." });
-        } */
         return Promise.resolve({ error, success: false });
-      }
+    }
 }
 
 /** update user function */

@@ -34,10 +34,18 @@ const Register = () => {
       toast.promise(registerPromise, {
         loading: "Creating...",
         success: <b>Register Successfully!</b>,
-        error: <b>Could not Register.</b>,
-      });
-      registerPromise.then(function () {
-        navigate("/login");
+        error: (error) => {
+          if (error.response && error.response.status === 500) {
+            const errorMessage = error.response.data.error;
+            console.log(errorMessage);
+            if (errorMessage === "Username exists") {
+              return <b>Username already exists.</b>;
+            } else if (errorMessage === "Email exists") {
+              return <b>Email already exists.</b>;
+            }
+          }
+          return <b>Could not Register.</b>;
+        },
       });
     },
   });
