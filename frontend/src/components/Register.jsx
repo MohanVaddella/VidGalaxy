@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import React, { useState } from "react";
 import EyeShow from "../assets/pass-show.png";
@@ -12,7 +12,7 @@ import { registerValidation } from "../helper/validate";
 import { registerUser } from "../helper/helper";
 
 const Register = () => {
-  const navigate = useNavigate();
+  /* const navigate = useNavigate(); */
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +22,6 @@ const Register = () => {
       username: "",
       password: "",
       confirmPassword: "",
-      privilege: "general", // Initialize privilege as an empty string
     },
     validate: registerValidation, // Use the validate function for overall form validation
     validateOnBlur: false,
@@ -66,7 +65,7 @@ const Register = () => {
       <Header />
       <section
         className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500"
-        style={{ padding: "15.5rem" }}
+        style={{ padding: "13.5rem" }}
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -216,7 +215,7 @@ const Register = () => {
                     />
                   </div>
                 </div>
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <label
                     htmlFor="privilege"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -258,7 +257,7 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
-
+ */}
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input

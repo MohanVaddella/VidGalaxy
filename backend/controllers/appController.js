@@ -27,14 +27,13 @@ export async function verifyUser(req, res, next){
     "password" : "John@123",
     "email": "example@gmail.com",
     "firstName" : "bill",
-    "lastName": "william",
-    "privilege": ""
+    "lastName": "william"
 }
 */
 
 export async function register(req, res){
     try {
-        const { firstName, lastName, email, username, password, privilege } = req.body;
+        const { firstName, lastName, email, username, password } = req.body;
         // check the existing username
     const existUsername = await UserModel.findOne({ username });
     if (existUsername) {
@@ -55,10 +54,10 @@ export async function register(req, res){
           username,
           password: hashedPassword,
           email,
-          privilege: privilege || "",
           firstName,
           lastName,
         });
+        
   
         // Save the user to the database
         const result = await user.save();

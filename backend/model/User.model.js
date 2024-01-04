@@ -17,8 +17,7 @@ export const UserSchema = new mongoose.Schema({
         unique : true,
     },
     firstName: { type: String},
-    lastName: { type: String},
-    privilege: { type: String}
+    lastName: { type: String}
 })
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

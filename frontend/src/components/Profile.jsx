@@ -7,7 +7,7 @@ import { profileValidation } from "../helper/validate";
 
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/fetch.hook";
-import { useAuthStore } from "../store/store";
+/* import { useAuthStore } from "../store/store"; */
 import { updateUser } from "../helper/helper";
 
 const Profile = () => {
@@ -19,7 +19,6 @@ const Profile = () => {
       lastName: apiData?.lastName || "",
       email: apiData?.email || "",
       username: apiData?.username || "",
-      privilege: apiData?.privilege || "",
     },
     enableReinitialize: true,
     validate: profileValidation,
@@ -50,10 +49,7 @@ const Profile = () => {
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <Header />
-      <section
-        className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500"
-        style={{ padding: "0.5rem" }}
-      >
+      <section className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -107,15 +103,6 @@ const Profile = () => {
                   </span>
                   <span className="ml-2 text-gray-600 dark:text-gray-400">
                     {formik.values.username}
-                  </span>
-                </div>
-
-                <div className="flex mb-2">
-                  <span className="block w-1/3 text-sm font-medium text-gray-900 dark:text-white">
-                    Privilege:
-                  </span>
-                  <span className="ml-2 text-gray-600 dark:text-gray-400">
-                    {formik.values.privilege}
                   </span>
                 </div>
               </div>
