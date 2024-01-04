@@ -1,7 +1,8 @@
 import express from 'express';
 import multer from "multer";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import config from './config.js';
+import dotenv from "dotenv";
+import ENV from './config.js';
 import cors from 'cors';
 import morgan from 'morgan';
 import connect from './database/conn.js';
@@ -22,10 +23,10 @@ app.use(bodyParser.json());
 
 // Create an S3 client
 const s3Client = new S3Client({
-    region: process.config.AWS_REGION,
+    region: ENV.AWS_REGION,
     credentials: {
-      accessKeyId: process.config.S3_ACCESS_KEY,
-      secretAccessKey: process.config.S3_SECRET_KEY,
+      accessKeyId: ENV.S3_ACCESS_KEY,
+      secretAccessKey: ENV.S3_SECRET_KEY,
     },
   });
 
@@ -44,7 +45,7 @@ const s3Client = new S3Client({
       const contentType = file.mimetype;
   
       const params = {
-        Bucket: process.config.S3_BUCKET_NAME,
+        Bucket: ENV.S3_BUCKET_NAME,
         Key: file.originalname,
         Body: file.buffer,
         ContentType: contentType,
@@ -53,7 +54,7 @@ const s3Client = new S3Client({
       const response = await s3Client.send(new PutObjectCommand(params));
       console.log("File uploaded to S3:", response);
   
-      const fileUrl = `https://${process.config.S3_BUCKET_NAME}.s3.amazonaws.com/${file.originalname}`;
+      const fileUrl = `https://${ENV.S3_BUCKET_NAME}.s3.amazonaws.com/${file.originalname}`;
   
       res.status(200).json({ fileUrl });
     } catch (error) {
