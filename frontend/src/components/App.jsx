@@ -10,6 +10,9 @@ import TheaterModel from "./TheaterModel";
 import NotFound from "./NotFound";
 import Home from "./Home";
 import Profile from "./Profile";
+import VideoGallery from "./VideoGallery";
+import GenreCatalogue from "./GenreCatalogue";
+import Analytics from "./Analytics";
 
 /** auth middleware */
 import { AuthorizeUser, ProtectRoute } from "../middleware/auth";
@@ -32,6 +35,9 @@ function App() {
             </ProtectRoute>
           }
         />
+        <Route path="/videogallery" element={<VideoGallery />} />
+        <Route path="/genrecatalogue" element={<GenreCatalogue />} />
+        <Route path="/analytics" element={<Analytics />} />
         <Route path="/hemanth" element={<Hemanth />} />
         <Route path="/theatermodel" element={<TheaterModel />} />
         <Route path="*" element={<NotFound />} />
