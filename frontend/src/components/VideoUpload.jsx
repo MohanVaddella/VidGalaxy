@@ -1,9 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useAuthStore } from "../store/store";
+import { useFormik } from "formik";
+import { uploadValidation } from "../helper/validate";
 
 const VideoUpload = () => {
+  const { username } = useAuthStore((state) => state.auth);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      videoFile: null,
+      description: "",
+    },
+    validate: uploadValidation,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      values = await Object.assign(values, { username });
+      try {
+        const formData = new FormData();
+        formData.append("file", values.videoFile);
+
+        const response = await axios.post("/api/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          params: {
+            username: values.username,
+            title: values.title,
+            description: values.description,
+          },
+        });
+
+        setUploadedFileUrl(response.data.fileUrl);
+        toast.success("File uploaded successfully");
+      } catch (error) {
+        console.error("Failed to upload file:", error);
+        toast.error("Failed to upload file.");
+      }
+    },
+  });
+  const handleFileChange = (event) => {
+    formik.setFieldValue("videoFile", event.target.files[0]);
+  };
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -18,7 +63,11 @@ const VideoUpload = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Upload ISRO Documentaries
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={formik.handleSubmit}
+                encType="multipart/form-data"
+              >
                 <div>
                   <label
                     htmlFor="title"
@@ -27,6 +76,7 @@ const VideoUpload = () => {
                     Title
                   </label>
                   <input
+                    {...formik.getFieldProps("title")}
                     type="text"
                     name="title"
                     id="title"
@@ -71,6 +121,7 @@ const VideoUpload = () => {
                     type="file"
                     className="hidden"
                     accept="video/*"
+                    onChange={handleFileChange}
                   />
                 </div>
                 <div>
@@ -81,6 +132,7 @@ const VideoUpload = () => {
                     Description
                   </label>
                   <textarea
+                    {...formik.getFieldProps("description")}
                     name="description"
                     id="description"
                     rows="4"

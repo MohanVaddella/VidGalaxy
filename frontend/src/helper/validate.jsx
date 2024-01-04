@@ -124,3 +124,51 @@ export async function profileValidation(values) {
   const errors = emailVerify({}, values);
   return errors;
 }
+
+
+export async function uploadValidation(values) {
+  const errors = {};
+
+  titleVerify(errors, values);
+  videoFileVerify(errors, values);
+  descriptionVerify(errors, values);
+
+  return errors;
+}
+
+// Validate title
+function titleVerify(errors = {}, values) {
+  if (!values.title) {
+    errors.title = "Title is required...!";
+  } else if (values.title.length > 255) {
+    errors.title = "Title must be less than 255 characters...!";
+  }
+
+  return errors;
+}
+
+// Validate video file upload
+function videoFileVerify(errors = {}, values) {
+  if (!values.videoFile) {
+    errors.videoFile = "Video file is required...!";
+  } else {
+    // You can add additional checks for the video file if needed
+    const allowedFormats = ['mp4'];
+    const fileExtension = values.videoFile.name.split('.').pop().toLowerCase();
+
+    if (!allowedFormats.includes(fileExtension)) {
+      errors.videoFile = "Invalid video file format. Only MP4 files are allowed...!";
+    }
+  }
+
+  return errors;
+}
+
+// Validate description
+function descriptionVerify(errors = {}, values) {
+  if (values.description && values.description.length > 500) {
+    errors.description = "Description must be less than 500 characters...!";
+  }
+
+  return errors;
+}

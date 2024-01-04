@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import connect from './database/conn.js';
 import router from './router/route.js';
 import bodyParser from 'body-parser';
+dotenv.config();
 
 const app = express();
 const port = 8080;
@@ -38,15 +39,16 @@ const s3Client = new S3Client({
     },
   });
 
-  app.post("/videoUpload", upload.single("file"), async (req, res) => {
+  app.post("/upload", upload.single("file"), async (req, res) => {
     try {
       const file = req.file;
+      const { username } = req.query;
   
       const contentType = file.mimetype;
   
       const params = {
         Bucket: ENV.S3_BUCKET_NAME,
-        Key: file.originalname,
+        Key: `${username}/${file.originalname}`,
         Body: file.buffer,
         ContentType: contentType,
       };
@@ -54,7 +56,7 @@ const s3Client = new S3Client({
       const response = await s3Client.send(new PutObjectCommand(params));
       console.log("File uploaded to S3:", response);
   
-      const fileUrl = `https://${ENV.S3_BUCKET_NAME}.s3.amazonaws.com/${file.originalname}`;
+      const fileUrl = `https://${ENV.S3_BUCKET_NAME}.s3.amazonaws.com/${username}/${file.originalname}`;
   
       res.status(200).json({ fileUrl });
     } catch (error) {
