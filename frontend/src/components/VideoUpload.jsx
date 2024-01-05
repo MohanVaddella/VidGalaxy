@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useAuthStore } from "../store/store";
 import { useFormik } from "formik";
 import { uploadValidation } from "../helper/validate";
+import { uploadFile } from "../helper/helper";
 
 const VideoUpload = () => {
   const { username } = useAuthStore((state) => state.auth);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
   const formik = useFormik({
@@ -24,30 +24,24 @@ const VideoUpload = () => {
     onSubmit: async (values) => {
       values = await Object.assign(values, { username });
       try {
-        const formData = new FormData();
-        formData.append("file", values.videoFile);
+        const uploadResponse = await uploadFile(values);
 
-        const response = await axios.post("/api/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          params: {
-            username: values.username,
-            title: values.title,
-            description: values.description,
-          },
-        });
-
-        setUploadedFileUrl(response.data.fileUrl);
-        toast.success("File uploaded successfully");
+        if (uploadResponse.status === 200) {
+          setUploadedFileUrl(uploadResponse.data.fileUrl);
+          toast.success("File uploaded successfully");
+        } else {
+          toast.error("Failed to upload file.");
+        }
       } catch (error) {
-        console.error("Failed to upload file:", error);
-        toast.error("Failed to upload file.");
+        // Handle any unexpected errors
+        toast.error("An unexpected error occurred.");
       }
     },
   });
   const handleFileChange = (event) => {
-    formik.setFieldValue("videoFile", event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    formik.setFieldValue("videoFile", selectedFile);
+    setSelectedFileName(selectedFile.name);
   };
   return (
     <div>
@@ -124,6 +118,14 @@ const VideoUpload = () => {
                     onChange={handleFileChange}
                   />
                 </div>
+                {/* New section to display selected file */}
+                {selectedFileName && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      <b>Selected File:</b> {selectedFileName}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <label
                     htmlFor="description"

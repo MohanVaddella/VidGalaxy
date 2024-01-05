@@ -114,3 +114,30 @@ export async function resetPassword({ username, password }){
         return Promise.reject({ error })
     }
 }
+
+
+/** video upload */
+
+
+// Update the helper function to handle S3 upload
+export async function uploadFile(values) {
+    try {
+        const formData = new FormData();
+        formData.append("file", values.videoFile);
+        const { data, status } = await axios.post("/api/upload", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        params: {
+            username: values.username,
+            title: values.title,
+            description: values.description,
+        },
+        });
+
+        return Promise.resolve({ data, status });
+    } catch (error) {
+      // Handle the error here
+        return Promise.reject({ error });
+    }
+}

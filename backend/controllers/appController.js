@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 import otpGenerator from 'otp-generator';
-
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import multer from "multer";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 /** middleware for verify user */
@@ -222,31 +225,56 @@ export async function resetPassword(req, res){
 }
 
 
-export const fileUpload = async (req, res) => {
+// Create an S3 client
+const s3Client = new S3Client({
+    region: ENV.AWS_REGION,
+    credentials: {
+        accessKeyId: ENV.S3_ACCESS_KEY,
+        secretAccessKey: ENV.S3_SECRET_KEY,
+    },
+});
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage,
+    limits: {
+    fileSize: 25 * 1024 * 1024, // 25MB in bytes
+    },
+});
+
+/** POST: http://localhost:8080/api/upload */
+export const uploadVideo = async (req, res) => {
     try {
-        console.log("req files", req.file);
+        const file = req.file;
+        const { username } = req.query;
 
-        if (!req?.file) {
-            return res.status(403).json({ status: false, error: "Please upload video" });
-        }
+        const contentType = file.mimetype;
 
-        console.log("req?.file", req?.file);
+        console.log("Username:", username);
+        console.log("Original Name:", file.originalname);
+        console.log("Content Type:", contentType);
 
-        let data = {};
+        const params = {
+        Bucket: ENV.S3_BUCKET_NAME,
+        Key: `${username}/${file.originalname}`,
+        Body: file.buffer,
+        ContentType: contentType,
+        };
 
-        if (!!req?.file) {
-            data = {
-                url: req.file.location,
-                type: req.file.mimetype,
-            };
-        }
+        const response = await s3Client.send(new PutObjectCommand(params));
+        console.log("File uploaded to S3:", response);
 
-        return res.json({
-            data: data,
-            status: true,
-        });
-    } catch (error) {
-        return res.status(403).json({ status: false, error: error.message });
+        const fileUrl = `https://${ENV.S3_BUCKET_NAME}.s3.amazonaws.com/${username}/${file.originalname}`;
+
+        res.status(200).json({ fileUrl });
+        } catch (error) {
+        console.error("Failed to upload file to S3:", error);
+        res.status(500).json({ error: "Failed to upload file to S3" });
     }
 };
+
+
+
+
 
