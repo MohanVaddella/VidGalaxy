@@ -10,6 +10,7 @@ const port = 8080;
 
 /** middlewares */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({ "origin": "*"}));
 app.use(morgan('tiny'));
 app.disable('x-powered-by');  //less hackers know about our stack

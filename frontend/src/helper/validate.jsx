@@ -140,8 +140,8 @@ export async function uploadValidation(values) {
 function titleVerify(errors = {}, values) {
   if (!values.title) {
     errors.title = "Title is required...!";
-  } else if (values.title.length > 255) {
-    errors.title = "Title must be less than 255 characters...!";
+  } else if (values.title.length > 100) {
+    errors.title = "Title must be less than 100 characters...!";
   }
 
   return errors;
