@@ -27,10 +27,7 @@ const VideoUpload = () => {
       values = await Object.assign(values, { username });
       console.log(values.username);
       try {
-        const uploadResponse = await uploadFile({
-          ...values,  // existing form values
-          /* username: user.username, */
-        });
+        const uploadResponse = await uploadFile(values);
 
         if (uploadResponse.status === 200) {
           setUploadedFileUrl(uploadResponse.data.fileUrl);

@@ -1,5 +1,5 @@
 import UserModel from '../model/User.model.js';
-import VideoModel from '../models/video.model';
+import VideoModel from '../model/Video.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
