@@ -123,7 +123,9 @@ export async function resetPassword({ username, password }){
 export async function uploadFile(values) {
     try {
         const formData = new FormData();
-        formData.append("file", values.videoFile); 
+        formData.append("file", values.videoFile);
+
+       /*  console.log("FormData content:", formData);  */
         const { data, status } = await axios.post("/api/upload", formData, {
         headers: {
             "Content-Type": "multipart/form-data",

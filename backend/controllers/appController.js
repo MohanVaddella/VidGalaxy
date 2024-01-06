@@ -1,4 +1,5 @@
 import UserModel from '../model/User.model.js';
+import VideoModel from '../models/video.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
@@ -61,7 +62,7 @@ export async function register(req, res){
           lastName,
         });
         
-  
+
         // Save the user to the database
         const result = await user.save();
         return res.status(201).send({ msg: "User registered successfully" });
@@ -247,13 +248,17 @@ const upload = multer({
 export const uploadVideo = async (req, res) => {
     try {
         const file = req.file;
+        if (!file) {
+            return res.status(400).json({ error: "No file provided" });
+        }
+
+        /* console.log("Request object:", req); */
         const { username } = req.query;
-
         const contentType = file.mimetype;
-
-        console.log("Username:", username);
+        const { title, description } = req.query;
+        /* console.log("Username:", username);
         console.log("Original Name:", file.originalname);
-        console.log("Content Type:", contentType);
+        console.log("Content Type:", contentType); */
 
         const params = {
         Bucket: ENV.S3_BUCKET_NAME,
@@ -261,13 +266,21 @@ export const uploadVideo = async (req, res) => {
         Body: file.buffer,
         ContentType: contentType,
         };
-
+        
         const response = await s3Client.send(new PutObjectCommand(params));
         console.log("File uploaded to S3:", response);
 
         const fileUrl = `https://${ENV.S3_BUCKET_NAME}.s3.amazonaws.com/${username}/${file.originalname}`;
 
-        res.status(200).json({ fileUrl });
+        const video = new VideoModel({
+            title,
+            fileUrl,
+            description,
+            username: req.query.username,
+        });
+
+        await video.save();
+        res.status(200).json({ fileUrl: objectURL, videoDetails: video });
         } catch (error) {
         console.error("Failed to upload file to S3:", error);
         res.status(500).json({ error: "Failed to upload file to S3" });

@@ -1,5 +1,7 @@
 import { Router } from "express";
 import cors from "cors"; // Import cors middleware
+import multer from "multer";
+const upload = multer();
 const router = Router();
 
 
@@ -16,7 +18,7 @@ router.route('/register').post(controller.register); // register user
 router.route('/registerMail').post(registerMail); // send the mail
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); // authenticate user
 router.route('/login').post(controller.verifyUser, controller.login); // login in app
-router.route('/upload').post(controller.uploadVideo);
+router.route('/upload').post(upload.single("file"), controller.uploadVideo);
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) // user with username

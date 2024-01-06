@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { uploadValidation } from "../helper/validate";
 import { uploadFile } from "../helper/helper";
 
+
 const VideoUpload = () => {
   const { username } = useAuthStore((state) => state.auth);
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -22,9 +23,14 @@ const VideoUpload = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
+      /* console.log("Form values:", values); */
       values = await Object.assign(values, { username });
+      console.log(values.username);
       try {
-        const uploadResponse = await uploadFile(values);
+        const uploadResponse = await uploadFile({
+          ...values,  // existing form values
+          /* username: user.username, */
+        });
 
         if (uploadResponse.status === 200) {
           setUploadedFileUrl(uploadResponse.data.fileUrl);
