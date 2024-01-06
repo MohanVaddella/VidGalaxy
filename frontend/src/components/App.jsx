@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -19,11 +19,6 @@ import { AuthorizeUser, ProtectRoute } from "../middleware/auth";
 
 // Use the Register component in your application
 function App() {
-
-  const [selectedVideo, setSelectedVideo] = useState("") //video path
-  const [videos, setVideos] = useState([]) //list of videos
-  const [onClose, setOnclose] = useState(false)
-  
   return (
     <div className="App">
       <Routes>
@@ -44,7 +39,7 @@ function App() {
         <Route path="/genrecatalogue" element={<GenreCatalogue />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/hemanth" element={<Hemanth />} />
-        <Route path="/theatermodel" element={<TheaterModel selectedVideo={selectedVideo} videos={videos} onClose={onClose}/>} />
+        <Route path="/theatermodel" element={<TheaterModel />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/profile" element={<Profile />} />
 
