@@ -255,7 +255,7 @@ export const uploadVideo = async (req, res) => {
         /* console.log("Request object:", req); */
         const { username } = req.query;
         const contentType = file.mimetype;
-        const { title, description } = req.query;
+        const { title, description } = req.body;
         /* console.log("Username:", username);
         console.log("Original Name:", file.originalname);
         console.log("Content Type:", contentType); */
@@ -276,11 +276,11 @@ export const uploadVideo = async (req, res) => {
             title,
             fileUrl,
             description,
-            username: req.query.username,
+            username,
         });
 
         await video.save();
-        res.status(200).json({ fileUrl: objectURL, videoDetails: video });
+        res.status(200).json({ fileUrl, videoDetails: video });
         } catch (error) {
         console.error("Failed to upload file to S3:", error);
         res.status(500).json({ error: "Failed to upload file to S3" });

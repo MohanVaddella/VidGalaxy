@@ -23,9 +23,8 @@ const VideoUpload = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      /* console.log("Form values:", values); */
+      console.log("Form values:", values);
       values = await Object.assign(values, { username });
-      console.log(values.username);
       try {
         const uploadResponse = await uploadFile(values);
 
