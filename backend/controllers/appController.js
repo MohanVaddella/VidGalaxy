@@ -253,12 +253,9 @@ export const uploadVideo = async (req, res) => {
         }
 
         /* console.log("Request object:", req); */
-        const { username } = req.query;
+        const { username } = req.body;
         const contentType = file.mimetype;
         const { title, description } = req.body;
-        /* console.log("Username:", username);
-        console.log("Original Name:", file.originalname);
-        console.log("Content Type:", contentType); */
 
         const params = {
         Bucket: ENV.S3_BUCKET_NAME,

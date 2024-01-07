@@ -128,16 +128,11 @@ export async function uploadFile(values) {
         formData.append("title", values.title);  // Add this line
         formData.append("description", values.description);
 
-        console.log("FormData content:", formData); 
+        /* console.log("FormData content:", formData);  */
         const { data, status } = await axios.post("/api/upload", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
-        /* params: {
-            username: values.username,
-            title: values.title,
-            description: values.description,
-        }, */
         });
 
         return Promise.resolve({ data, status });
