@@ -141,3 +141,13 @@ export async function uploadFile(values) {
         return Promise.reject({ error });
     }
 }
+
+
+export async function getVideos() {
+    try {
+      const response = await axios.get("/api/videos"); // Adjust the endpoint as needed
+      return Promise.resolve(response.data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }

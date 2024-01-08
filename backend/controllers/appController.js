@@ -285,6 +285,19 @@ export const uploadVideo = async (req, res) => {
     }
 };
 
+export const fetchVideos = async (req, res) => {
+    try {
+      const { username } = req.query;
+      console.log(username);
+      const videos = await VideoModel.find({ username });
+      console.log("Videos found:", videos);
+      res.status(200).json(videos);
+    } catch (error) {
+      console.error("Failed to fetch videos:", error);
+      res.status(500).json({ error: "Failed to fetch videos" });
+    }
+  };
+
 
 
 
