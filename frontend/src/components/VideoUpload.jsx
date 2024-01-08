@@ -7,7 +7,6 @@ import { useFormik } from "formik";
 import { uploadValidation } from "../helper/validate";
 import { uploadFile } from "../helper/helper";
 
-
 const VideoUpload = () => {
   const { username } = useAuthStore((state) => state.auth);
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -36,7 +35,7 @@ const VideoUpload = () => {
         }
       } catch (error) {
         // Handle any unexpected errors
-        toast.error("An unexpected error occurred.");
+        toast.error("Check if the video is already uploaded.");
       }
     },
   });
