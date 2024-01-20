@@ -143,11 +143,13 @@ export async function uploadFile(values) {
 }
 
 
-export async function getVideos() {
+export async function getVideos(username) {
     try {
-      const response = await axios.get("/api/videos"); // Adjust the endpoint as needed
+      const response = await axios.get("/api/videos", { params: { username } }); // Adjust the endpoint as needed
+      console.log("Response from /api/videos:", response.data);
       return Promise.resolve(response.data);
     } catch (error) {
+    console.error("Error fetching videos:", error);
       return Promise.reject(error);
     }
   }

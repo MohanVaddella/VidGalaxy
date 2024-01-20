@@ -2,21 +2,27 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useAuthStore } from "../store/store";
 import { getVideos } from "../helper/helper";
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
-
+  const { username } = useAuthStore((state) => state.auth);
+  console.log(username);
   useEffect(() => {
     // Fetch videos when the component mounts
     receiveVideos();
-  }, []);
+  }, [username]);
 
   const receiveVideos = async () => {
     try {
+      if (!username) {
+        toast.error("Username is required.");
+        return;
+      }
       // Call the helper function to get videos
-      const response = await getVideos();
-
+      const response = await getVideos(username);
+      console.log(username);
       if (response.status === 200) {
         setVideos(response.data); // Update the videos state
       } else {
