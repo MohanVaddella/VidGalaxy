@@ -145,11 +145,19 @@ export async function uploadFile(values) {
 
 export async function getVideos(username) {
     try {
-      const response = await axios.get("/api/videos", { params: { username } }); // Adjust the endpoint as needed
-      console.log("Response from /api/videos:", response.data);
-      return Promise.resolve(response.data);
+        const response = await axios.get("/api/videos", { params: { username } }); // Adjust the endpoint as needed
+        /* console.log("Response from /api/videos:", response.data); */
+        if (response.status === 200) {
+            return Promise.resolve(response.data);
+        } else if (response.status === 304) {
+        // No content, return an empty array
+            return Promise.resolve([]);
+        } else {
+        // Other error status codes
+        return Promise.reject(response.statusText);
+        }
     } catch (error) {
     console.error("Error fetching videos:", error);
-      return Promise.reject(error);
+        return Promise.reject(error);
     }
-  }
+}
