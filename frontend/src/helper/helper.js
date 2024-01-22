@@ -126,7 +126,6 @@ export async function uploadFile(values) {
         formData.append("file", values.videoFile);
         formData.append("username", values.username);
         formData.append("title", values.title);  // Add this line
-        formData.append("description", values.description);
 
         /* console.log("FormData content:", formData);  */
         const { data, status } = await axios.post("/api/upload", formData, {

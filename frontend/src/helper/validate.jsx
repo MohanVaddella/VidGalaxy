@@ -131,7 +131,6 @@ export async function uploadValidation(values) {
 
   titleVerify(errors, values);
   videoFileVerify(errors, values);
-  descriptionVerify(errors, values);
 
   return errors;
 }
@@ -164,11 +163,3 @@ function videoFileVerify(errors = {}, values) {
   return errors;
 }
 
-// Validate description
-function descriptionVerify(errors = {}, values) {
-  if (values.description && values.description.length > 500) {
-    errors.description = "Description must be less than 500 characters...!";
-  }
-
-  return errors;
-}
