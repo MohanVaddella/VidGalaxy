@@ -35,7 +35,9 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route path="/videogallery" element={<VideoGallery />} />
+        <Route path="/videogallery" element={<ProtectRoute>
+              <VideoGallery />
+            </ProtectRoute>} />
         <Route path="/genrecatalogue" element={<GenreCatalogue />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/hemanth" element={<Hemanth />} />

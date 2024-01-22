@@ -67,10 +67,10 @@ const VideoGallery = () => {
   useEffect(() => {
     const receiveVideos = async () => {
       try {
-        if (!username) {
+        /* if (!username) {
           toast.error("Login to your account!");
           return;
-      }
+      } */
         // Call the helper function to get videos
         const response = await getVideos(username);
         if (Array.isArray(response)) {
