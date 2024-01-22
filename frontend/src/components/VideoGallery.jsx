@@ -8,11 +8,11 @@ import { getVideos } from "../helper/helper";
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
-  const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
+  const [ffmpegLoaded, setFfmpegLoaded] = useState(false); 
 
   const ffmpeg = require('@ffmpeg/ffmpeg');
-  
 
+  // Load FFmpeg when the component mounts
   useEffect(() => {
     const loadFfmpeg = async () => {
       try {
@@ -26,6 +26,7 @@ const VideoGallery = () => {
     loadFfmpeg();
   }, [ffmpeg]);
 
+  // Function to generate poster image
   const generatePoster = async (videoUrl) => {
     try {
       if (!ffmpegLoaded) {
@@ -61,39 +62,38 @@ const VideoGallery = () => {
   };
 
   const { username } = useAuthStore((state) => state.auth);
-  /* console.log(username); */
+
+  // Fetch videos when the component mounts or when the username changes
   useEffect(() => {
-
-  const receiveVideos = async () => {
-    try {
-      if (!username) {
-        toast.error("Login to your account!");
-        return;
+    const receiveVideos = async () => {
+      try {
+        if (!username) {
+          toast.error("Login to your account!");
+          return;
       }
-      // Call the helper function to get videos
-      const response = await getVideos(username);
-      /* console.log(username); */
-      if (Array.isArray(response)) {
-        // Update the videos state with the array (including empty array)
-        const videosWithPosters = await Promise.all(
-          response.map(async (video) => {
-            const poster = await generatePoster(video.fileUrl);
-            return { ...video, poster };
-          })
-        );
+        // Call the helper function to get videos
+        const response = await getVideos(username);
+        if (Array.isArray(response)) {
+          // Update the videos state with the array (including an empty array)
+          const videosWithPosters = await Promise.all(
+            response.map(async (video) => {
+              const poster = await generatePoster(video.fileUrl);
+              return { ...video, poster };
+            })
+          );
 
-        setVideos(videosWithPosters);
-      } else {
-        toast.error("Failed to fetch videos.");
+          setVideos(videosWithPosters);
+        } else {
+          toast.error("Failed to fetch videos.");
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred:", error);
+        toast.error("An unexpected error occurred.");
       }
-    } catch (error) {
-      console.error("An unexpected error occurred:", error);
-      toast.error("An unexpected error occurred.");
-    }
-  };
+    };
 
-  receiveVideos();
-}, [username, ffmpegLoaded]);
+    receiveVideos();
+  }, [username]);
 
   return (
     <div>
