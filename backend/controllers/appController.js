@@ -297,6 +297,25 @@ export const fetchVideos = async (req, res) => {
     }
 };
 
+/** GET: http://localhost:8080/api/ */
+export const fetchAnalytics = async (req, res) => {
+    try {
+      const { username } = req.query;
+  
+      // Fetch the total count of uploaded videos for the user
+      const uploadedCount = await VideoModel.countDocuments({ username });
+  
+      // You can add more analytics data fetching logic here, such as views and likes
+  
+      res.status(200).json({
+        uploadedCount,
+        // Add more analytics data here
+      });
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  };
 
 
 

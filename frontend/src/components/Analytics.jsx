@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useAuthStore } from "../store/store";
+import { getAnalytics } from "../helper/helper";
+
 
 const Analytics = () => {
+
+  const [analytics, setAnalytics] = useState(null);
+
+  const { username } = useAuthStore((state) => state.auth);
+
+  useEffect(() => {
+    const receiveAnalytics = async () => {
+      try {
+        const analyticsData = await getAnalytics(username);
+        setAnalytics(analyticsData);
+      } catch (error) {
+        toast.error("Error fetching analytics data.");
+      }
+    };
+
+    receiveAnalytics();
+  }, [username]);
+
+  
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -19,6 +41,12 @@ const Analytics = () => {
                 Your Monthly Analytics
               </h1>
             </div>
+            {analytics && (
+        <div>
+          <p>Total Uploaded Videos: {analytics.uploadedCount}</p>
+          {/* Display other analytics data as needed */}
+        </div>
+      )}
           </div>
         </div>
       </section>

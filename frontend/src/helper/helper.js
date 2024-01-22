@@ -160,3 +160,14 @@ export async function getVideos(username) {
         return Promise.reject(error);
     }
 }
+
+
+export const getAnalytics = async (username) => {
+    try {
+      const response = await axios.get(`/api/analytics/${username}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      throw error;
+    }
+  };
