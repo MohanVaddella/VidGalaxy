@@ -4,13 +4,14 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useAuthStore } from "../store/store";
 import { getVideos } from "../helper/helper";
-const { createFFmpeg } = require('@ffmpeg/ffmpeg');
+
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
 
-  const ffmpeg = createFFmpeg({ log: true });
+  const ffmpeg = require('@ffmpeg/ffmpeg');
+  
 
   useEffect(() => {
     const loadFfmpeg = async () => {
