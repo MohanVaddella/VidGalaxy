@@ -35,11 +35,23 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route path="/videogallery" element={<ProtectRoute>
+        <Route
+          path="/videogallery"
+          element={
+            <ProtectRoute>
               <VideoGallery />
-            </ProtectRoute>} />
+            </ProtectRoute>
+          }
+        />
         <Route path="/genrecatalogue" element={<GenreCatalogue />} />
-        <Route path="/analytics" element={<Analytics />} />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectRoute>
+              <Analytics />
+            </ProtectRoute>
+          }
+        />
         <Route path="/hemanth" element={<Hemanth />} />
         <Route path="/theatermodel" element={<TheaterModel />} />
         <Route path="*" element={<NotFound />} />

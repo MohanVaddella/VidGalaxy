@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "./Header";
+import HeaderOne from "./HeaderOne";
 import Footer from "./Footer";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
@@ -48,7 +48,7 @@ const Profile = () => {
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <Header />
+      <HeaderOne />
       <section className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

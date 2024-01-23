@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import Header from "./Header";
+import HeaderOne from "./HeaderOne";
 import Footer from "./Footer";
 import { useAuthStore } from "../store/store";
 import { getVideos } from "../helper/helper";
@@ -98,7 +98,7 @@ const VideoGallery = () => {
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <Header />
+      <HeaderOne />
       <section
         className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500"
         style={{ padding: "5.5rem" }}

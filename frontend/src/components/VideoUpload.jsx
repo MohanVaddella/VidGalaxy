@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import Header from "./Header";
+import HeaderOne from "./HeaderOne";
 import Footer from "./Footer";
 import { useAuthStore } from "../store/store";
 import { useFormik } from "formik";
@@ -46,7 +46,7 @@ const VideoUpload = () => {
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <Header />
+      <HeaderOne />
       <section
         className="bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500"
         style={{ padding: "6.5rem" }}
