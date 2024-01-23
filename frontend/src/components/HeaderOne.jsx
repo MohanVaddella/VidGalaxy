@@ -1,10 +1,44 @@
 // HeaderOne.jsx
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AvatarDropdown from "./AvatarDropdown";
+import  useFetch  from "../hooks/fetch.hook";
 
 const HeaderOne = () => {
+  const [{ isLoading, apiData, serverError }, fetchUserData] = useFetch();
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchUserData({
+          url: "/api/user", // Update the URL accordingly
+          method: "GET",
+        });
+
+        if (response.apiData) {
+          setUserData(response.apiData);
+        } else {
+          console.error("Invalid API response:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [fetchUserData]);
+
+  if (isLoading) {
+    // Add loading indicator if needed
+    return <div>Loading...</div>;
+  }
+
+  if (serverError) {
+    return <div>Error: {serverError.message}</div>;
+  }
+
   return (
     <header className="fixed w-full top-0 z-50">
       <nav className="bg-gradient-to-r from-gray-700 to-gray-200 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -20,7 +54,7 @@ const HeaderOne = () => {
             </span>
           </Link>
           <div className="flex items-center lg:order-2">
-            <AvatarDropdown />
+              {apiData && <AvatarDropdown userData={userData} />}
             
             <button
               data-collapse-toggle="mobile-menu-2"

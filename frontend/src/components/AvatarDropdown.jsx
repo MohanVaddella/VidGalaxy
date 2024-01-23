@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-const AvatarDropdown = () => {
+const AvatarDropdown = ({ firstName, lastName }) => {
   const navigate = useNavigate();
   
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -46,7 +46,7 @@ const AvatarDropdown = () => {
         >
           <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
             <div>Welcome</div>
-            <div className="font-medium truncate">name@flowbite.com</div>
+            <div className="font-medium truncate">{`${firstName} ${lastName}!`}</div>
           </div>
           <ul className="py-2 text-md text-gray-900 dark:text-gray-200">
             <li>
