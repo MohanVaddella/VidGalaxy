@@ -162,12 +162,12 @@ export async function getVideos(username) {
 }
 
 
-export const getAnalytics = async (username) => {
+export async function getAnalytics(username) {
     try {
-      const response = await axios.get(`/api/analytics/${username}`);
-      return response.data;
+        const response = await axios.get("/api/analytics", { params: { username } });
+        return response.data;
     } catch (error) {
-      console.error("Error fetching analytics:", error);
-      throw error;
+        console.error("Error fetching analytics:", error);
+        throw error;
     }
-  };
+};
