@@ -13,9 +13,10 @@ const HeaderOne = () => {
     const fetchData = async () => {
       try {
         const response = await fetchUserData({
-          url: "/api/user", // Update the URL accordingly
+          url: "/api/user/", // Update the URL accordingly
           method: "GET",
         });
+        console.log(response);
 
         if (response.apiData) {
           setUserData(response.apiData);
@@ -54,7 +55,7 @@ const HeaderOne = () => {
             </span>
           </Link>
           <div className="flex items-center lg:order-2">
-              {apiData && <AvatarDropdown userData={userData} />}
+              {apiData && <AvatarDropdown userData={apiData} />}
             
             <button
               data-collapse-toggle="mobile-menu-2"

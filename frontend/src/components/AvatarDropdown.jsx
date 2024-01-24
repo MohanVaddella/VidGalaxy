@@ -3,9 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-const AvatarDropdown = ({ firstName, lastName }) => {
+const AvatarDropdown = ({ userData }) => {
   const navigate = useNavigate();
+  if (!userData) {
+    return null; 
+  }
   
+  const { firstName, lastName } = userData;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {
