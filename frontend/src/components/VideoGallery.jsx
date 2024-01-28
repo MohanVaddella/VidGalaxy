@@ -95,6 +95,27 @@ const VideoGallery = () => {
     receiveVideos();
   }, [username]);
 
+  // Function to handle video deletion
+  const deleteVideo = async (videoId) => {
+    try {
+      // Make a request to your backend to delete the video by ID
+      const response = await fetch(`/api/videos/${videoId}`, {
+        method: "DELETE",
+      });
+
+      if (response.status === 200) {
+        toast.success("Video deleted successfully");
+        // After deletion, update the videos state to exclude the deleted video
+        setVideos((prevVideos) => prevVideos.filter((video) => video._id !== videoId));
+      } else {
+        toast.error("Failed to delete video");
+      }
+    } catch (error) {
+      console.error("Error deleting video:", error);
+      toast.error("An unexpected error occurred");
+    }
+  };
+
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -149,6 +170,12 @@ const VideoGallery = () => {
                           style={{ maxWidth: "100%" }}
                         />
                       )}
+                      <button
+                onClick={() => deleteVideo(video._id)}
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
                     </div>
                   ))}
                 </div>

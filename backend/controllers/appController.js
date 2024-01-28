@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 import otpGenerator from 'otp-generator';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import multer from "multer";
 import dotenv from "dotenv";
 dotenv.config();
@@ -143,25 +143,29 @@ body: {
 */
 export async function updateUser(req, res){
     try {
-        // const id = req.query.id;
+        
         const { userId } = req.user;
-        if(id){
-            const body = req.body;
+        const body = req.body;
+        if(userId){
+            if (!body.firstName || !body.lastName) {
+                return res.status(400).send({ error: "First Name and Last Name are required fields" });
+            }
 
-            // update the data
-            UserModel.updateOne({ _id : userId}, body , function(err, data){
-                if(err) throw err;
-                return res.status(201).send({ msg : "Record Updated...!"});
-            })
-        }else{
-            return res.status(401).send({ error : "User Not Found...!"});
+            // Update the data
+            const updatedUser = await UserModel.findByIdAndUpdate(userId, { $set: body }, { new: true });
+
+            if (!updatedUser) {
+                return res.status(404).send({ error: "User not found" });
+            }
+
+            return res.status(201).send({ msg: "Record Updated...!" });
+        } else {
+            return res.status(401).send({ error: "User Not Found...!" });
         }
-
     } catch (error) {
-        return res.status(401).send({ error });
+        return res.status(500).send({ error: "Internal Server Error" });
     }
 }
-
 /** GET: http://localhost:8080/api/generateOTP */
 export async function generateOTP(req, res){
     req.app.locals.OTP = await otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false});
@@ -300,23 +304,49 @@ export const fetchVideos = async (req, res) => {
 /** GET: http://localhost:8080/api/ */
 export const fetchAnalytics = async (req, res) => {
     try {
-      const { username } = req.query;
-  
+        const { username } = req.query;
+
       // Fetch the total count of uploaded videos for the user
-      const uploadedCount = await VideoModel.countDocuments({ username });
-  
+        const uploadedCount = await VideoModel.countDocuments({ username });
+
       // You can add more analytics data fetching logic here, such as views and likes
-  
-      res.status(200).json({
+
+        res.status(200).json({
         uploadedCount,
         // Add more analytics data here
-      });
+        });
     } catch (error) {
-      console.error("Error fetching analytics:", error);
-      res.status(500).json({ error: "Failed to fetch analytics" });
+        console.error("Error fetching analytics:", error);
+        res.status(500).json({ error: "Failed to fetch analytics" });
     }
-  };
+};
 
 
+export const deleteVideo = async (req, res) => {
+    try {
+        const { username, videoId } = req.params;
 
+      // Fetch the video details from MongoDB
+        const video = await VideoModel.findById(videoId);
+        if (!video) {
+            return res.status(404).json({ error: "Video not found" });
+        }
+
+      // Delete the video file from S3
+        const s3Params = {
+        Bucket: ENV.S3_BUCKET_NAME,
+        Key: `${username}/${video.fileUrl.split("/").pop()}`,
+        };
+
+        await s3Client.send(new DeleteObjectCommand(s3Params));
+
+      // Delete the video details from MongoDB
+        await VideoModel.findByIdAndDelete(videoId);
+
+        res.status(200).json({ message: "Video deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting video:", error);
+        res.status(500).json({ error: "Failed to delete video" });
+    }
+};
 

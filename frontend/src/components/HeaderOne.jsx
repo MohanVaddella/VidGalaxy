@@ -16,7 +16,6 @@ const HeaderOne = () => {
           url: "/api/user/", // Update the URL accordingly
           method: "GET",
         });
-        console.log(response);
 
         if (response.apiData) {
           setUserData(response.apiData);

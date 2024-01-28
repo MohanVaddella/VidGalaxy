@@ -13,6 +13,8 @@ import { updateUser } from "../helper/helper";
 const Profile = () => {
   const navigate = useNavigate();
   const [{ isLoading, apiData, serverError }] = useFetch();
+  const [isEditingFirstName, setIsEditingFirstName] = useState(false);
+  const [isEditingLastName, setIsEditingLastName] = useState(false);
   const formik = useFormik({
     initialValues: {
       firstName: apiData?.firstName || "",
@@ -25,16 +27,15 @@ const Profile = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      values = await Object.assign(values);
-      let updatePromise = updateUser(values);
-
-      toast.promise(updatePromise, {
-        loading: "Updating...",
-        success: <b>Update Successfully...!</b>,
-        error: <b>Could not Update!</b>,
-      });
-    },
-  });
+      try {
+        const updatedUser = await updateUser(values);
+        toast.success("Update Successful!");
+        // You may choose to update the local state or refetch the user data
+    } catch (error) {
+        toast.error("Update Failed!");
+    }
+},
+});
 
   // logout handler function
   function userLogout() {
@@ -57,35 +58,60 @@ const Profile = () => {
                 Your Details
               </h1>
 
+              <form onSubmit={formik.handleSubmit}>
               <div className="details">
                 <div className="flex mb-2">
                   <span className="block w-1/3 text-sm font-medium text-gray-900 dark:text-white">
                     First Name:
                   </span>
-                  <span className="ml-2 text-gray-600 dark:text-gray-400">
-                    {formik.values.firstName}
-                  </span>
-                  <span
-                    className="ml-1 cursor-pointer"
-                    onClick={() => alert("Edit First Name")}
-                  >
-                    ✏️
-                  </span>
+                  {isEditingFirstName ? (
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formik.values.firstName}
+                        onChange={formik.handleChange}
+                        onBlur={() => setIsEditingFirstName(false)}
+                      />
+                    ) : (
+                      <>
+                        <span className="ml-2 text-gray-600 dark:text-gray-400">
+                          {formik.values.firstName}
+                        </span>
+                        <span
+                          className="ml-1 cursor-pointer"
+                          onClick={() => setIsEditingFirstName(true)}
+                        >
+                          ✏️
+                        </span>
+                      </>
+                    )}
                 </div>
 
                 <div className="flex mb-2">
                   <span className="block w-1/3 text-sm font-medium text-gray-900 dark:text-white">
                     Last Name:
                   </span>
-                  <span className="ml-2 text-gray-600 dark:text-gray-400">
-                    {formik.values.lastName}
-                  </span>
-                  <span
-                    className="ml-1 cursor-pointer"
-                    onClick={() => alert("Edit Last Name")}
-                  >
-                    ✏️
-                  </span>
+                  {isEditingLastName ? (
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
+                        onBlur={() => setIsEditingLastName(false)}
+                      />
+                    ) : (
+                      <>
+                        <span className="ml-2 text-gray-600 dark:text-gray-400">
+                          {formik.values.lastName}
+                        </span>
+                        <span
+                          className="ml-1 cursor-pointer"
+                          onClick={() => setIsEditingLastName(true)}
+                        >
+                          ✏️
+                        </span>
+                      </>
+                    )}
                 </div>
 
                 <div className="flex mb-2">
@@ -113,7 +139,7 @@ const Profile = () => {
               >
                 Update
               </button>
-
+              </form>
               <div className="text-center py-4">
                 <span className="text-gray-500">
                   Come back later?{" "}
@@ -122,6 +148,7 @@ const Profile = () => {
                   </button>
                 </span>
               </div>
+              
             </div>
           </div>
         </div>
