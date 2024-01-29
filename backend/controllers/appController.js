@@ -1,5 +1,6 @@
 import UserModel from '../model/User.model.js';
 import VideoModel from '../model/Video.model.js';
+import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
@@ -301,6 +302,39 @@ export const fetchVideos = async (req, res) => {
     }
 };
 
+export const deleteVideo = async (req, res) => {
+    try {
+        const { username, videoId } = req.params;
+        console.log(videoId);
+        console.log(username);
+        const ObjectId = mongoose.Types.ObjectId;
+        const objectIdVideoId = new ObjectId(videoId);
+
+      // Fetch the video details from MongoDB
+        const video = await VideoModel.findById(objectIdVideoId);
+        if (!video) {
+            return res.status(404).json({ error: "Video not found" });
+        }
+
+      // Delete the video file from S3
+        const s3Params = {
+        Bucket: ENV.S3_BUCKET_NAME,
+        Key: `${video.username}/${video.fileUrl.split("/").pop()}`,
+        };
+
+        await s3Client.send(new DeleteObjectCommand(s3Params));
+
+      // Delete the video details from MongoDB
+        await VideoModel.findByIdAndDelete(objectIdVideoId);
+
+        res.status(200).json({ message: "Video deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting video:", error);
+        res.status(500).json({ error: "Failed to delete video" });
+    }
+};
+
+
 /** GET: http://localhost:8080/api/ */
 export const fetchAnalytics = async (req, res) => {
     try {
@@ -322,31 +356,4 @@ export const fetchAnalytics = async (req, res) => {
 };
 
 
-export const deleteVideo = async (req, res) => {
-    try {
-        const { username, videoId } = req.params;
-
-      // Fetch the video details from MongoDB
-        const video = await VideoModel.findById(videoId);
-        if (!video) {
-            return res.status(404).json({ error: "Video not found" });
-        }
-
-      // Delete the video file from S3
-        const s3Params = {
-        Bucket: ENV.S3_BUCKET_NAME,
-        Key: `${username}/${video.fileUrl.split("/").pop()}`,
-        };
-
-        await s3Client.send(new DeleteObjectCommand(s3Params));
-
-      // Delete the video details from MongoDB
-        await VideoModel.findByIdAndDelete(videoId);
-
-        res.status(200).json({ message: "Video deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting video:", error);
-        res.status(500).json({ error: "Failed to delete video" });
-    }
-};
 

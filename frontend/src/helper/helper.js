@@ -161,6 +161,21 @@ export async function getVideos(username) {
     }
 }
 
+export async function deleteVideo(username, videoId) {
+    try {
+        console.log(videoId);
+        const response = await axios.delete(`/api/videos/${username}/${videoId}`);
+        if (response.status === 200) {
+            return Promise.resolve({ message: "Video deleted successfully" });
+        } else {
+            return Promise.reject(response.data.error || "Failed to delete video");
+        }
+    } catch (error) {
+        console.error("Error deleting video:", error);
+        return Promise.reject("Failed to delete video");
+    }
+}
+
 
 export async function getAnalytics(username) {
     try {

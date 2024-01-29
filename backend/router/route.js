@@ -32,6 +32,6 @@ router.route('/analytics').get(controller.fetchAnalytics);
 router.route('/updateUser').put(Auth, controller.updateUser); // to update the user profile
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // to reset password
 
-router.route('/videos/:id').delete(controller.deleteVideo);
+router.route('/videos/:username/:videoId').delete(controller.deleteVideo);
 
 export default router;
