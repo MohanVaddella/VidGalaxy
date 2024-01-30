@@ -5,8 +5,6 @@ import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import ChangePassword from "./ChangePassword";
 import VideoUpload from "./VideoUpload";
-import Hemanth from "./Hemanth";
-import TheaterModel from "./TheaterModel";
 import NotFound from "./NotFound";
 import Home from "./Home";
 import Profile from "./Profile";
@@ -52,8 +50,6 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route path="/hemanth" element={<Hemanth />} />
-        <Route path="/theatermodel" element={<TheaterModel />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/profile" element={<Profile />} />
 
