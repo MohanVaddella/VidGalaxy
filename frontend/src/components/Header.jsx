@@ -15,7 +15,7 @@ const Header = () => {
               alt="Flowbite Logo"
             />
             <span className="self-center text-xl font-semibold whitespace-nowrap text-white dark:text-white">
-              VMGC
+            VidGalaxy
             </span>
           </Link>
           <div className="flex items-center lg:order-2">

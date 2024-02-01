@@ -1,7 +1,8 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-
+import Services from "./Services";
+import Rocket from "../assets/rocket.png";
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -11,14 +12,32 @@ const Home = () => {
       {/* Gradient Background */}
       <div className="flex-1 bg-gradient-to-r from-purple-500 via-blue-400 to-purple-500">
         {/* Content of your home page goes here */}
-        <div className="container mx-auto py-16">
-          <h1 className="text-4xl font-bold text-white">Welcome to VMGC!</h1>
-          <p className="text-lg text-white mt-4">
+        <div className="container mx-auto py-16 px-10 flex justify-center items-center text-white">
+        <div className="w-70 pr-8">
+          <h1 className="text-4xl font-bold mb-4">Unlock the Cosmos of Video Discovery with ISRO's <b><i>VidGalaxy</i></b></h1>
+          {/* Sub-headline */}
+          <h2 className="text-lg">
+            Revolutionizing Space Exploration through Personalized Video Experiences and Intelligent Recommendations
+          </h2>
+          <button
+          
+                className="mt-8 px-4 py-2 bg-gray-700 text-white rounded"
+              >
+                Get Started!
+              </button>
+          {/* <p className="text-lg mt-8">
             Explore the amazing content and features we offer!
-          </p>
+          </p> */}
+          </div>
+          <div className="w-30 rounded-lg overflow-hidden mt-9 ml-8 ring ring-white ring-2 shadow-lg">
+            <img src={Rocket} alt="Rocket" className="w-full h-auto rounded-lg" />
+          </div>
         </div>
-      </div>
 
+      
+      {/* Services Offering Section */}
+      <Services />
+        </div>
       {/* Footer */}
       <Footer />
     </div>
