@@ -10,6 +10,7 @@ import Home from "./Home";
 import Profile from "./Profile";
 import VideoGallery from "./VideoGallery";
 import GenreCatalogue from "./GenreCatalogue";
+import VideoClassify from "./VideoClassify";
 import Analytics from "./Analytics";
 
 /** auth middleware */
@@ -42,6 +43,7 @@ function App() {
           }
         />
         <Route path="/genrecatalogue" element={<GenreCatalogue />} />
+        <Route path="/videoclassify" element={<VideoClassify />} />
         <Route
           path="/analytics"
           element={
