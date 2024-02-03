@@ -18,6 +18,7 @@ import { AuthorizeUser, ProtectRoute } from "../middleware/auth";
 
 // Use the Register component in your application
 function App() {
+
   return (
     <div className="App">
       <Routes>
@@ -42,8 +43,22 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route path="/videosearch" element={<VideoSearch />} />
-        <Route path="/videoclassify" element={<VideoClassify />} />
+        <Route
+          path="/videosearch"
+          element={
+            <ProtectRoute>
+              <VideoSearch />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/videoclassify"
+          element={
+            <ProtectRoute>
+              <VideoClassify />
+            </ProtectRoute>
+          }
+        />
         <Route
           path="/analytics"
           element={

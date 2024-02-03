@@ -5,10 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const AvatarDropdown = ({ userData }) => {
   const navigate = useNavigate();
-  if (!userData) {
-    return null; 
-  }
-  
   const { firstName, lastName } = userData;
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -18,8 +14,17 @@ const AvatarDropdown = ({ userData }) => {
 
   function userLogout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     navigate("/");
   }
+
+  if (!userData) {
+    return null; 
+  }
+  
+  
+
+  
 
   return (
     <div className="relative">
@@ -70,8 +75,13 @@ const AvatarDropdown = ({ userData }) => {
               </Link>
             </li>
             <li>
-              <Link to="/genrecatalogue" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-                Genre Catalogue
+              <Link to="/videosearch" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+                Video Search
+              </Link>
+            </li>
+            <li>
+              <Link to="/videoclassify" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+                Video Classify
               </Link>
             </li>
             <li>

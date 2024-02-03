@@ -1,9 +1,21 @@
 // Header.jsx
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useAuthStore } from "../store/store";
 
 const Header = () => {
+  const isAuthenticated = useAuthStore.getState().auth.username !== '';
+
+  const handleNavigation = (to) => {
+    if (isAuthenticated) {
+      return <Navigate to={to} />;
+    } else {
+      // Redirect to login if not authenticated
+      return <Navigate to="/login" replace={true} />;
+    }
+  };
+  
   return (
     <header className="fixed w-full top-0 z-50">
       <nav className="bg-gradient-to-r from-gray-700 to-gray-200 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
