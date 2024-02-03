@@ -42,22 +42,8 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route
-          path="/videosearch"
-          element={
-            <ProtectRoute>
-              <VideoSearch />
-            </ProtectRoute>
-          }
-        />
-        <Route
-          path="/videoclassify"
-          element={
-            <ProtectRoute>
-              <VideoClassify />
-            </ProtectRoute>
-          }
-        />
+        <Route path="/videosearch" element={<VideoSearch />} />
+        <Route path="/videoclassify" element={<VideoClassify />} />
         <Route
           path="/analytics"
           element={
