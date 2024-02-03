@@ -3,7 +3,14 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Services from "./Services";
 import Rocket from "../assets/rocket.png";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/register"); 
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -20,14 +27,11 @@ const Home = () => {
             Revolutionizing Space Exploration through Personalized Video Experiences and Intelligent Recommendations
           </h2>
           <button
-          
                 className="mt-8 px-4 py-2 bg-gray-700 text-white rounded"
+                onClick={handleClick}
               >
                 Get Started!
               </button>
-          {/* <p className="text-lg mt-8">
-            Explore the amazing content and features we offer!
-          </p> */}
           </div>
           <div className="w-30 rounded-lg overflow-hidden mt-9 ml-8 ring ring-white ring-2 shadow-lg">
             <img src={Rocket} alt="Rocket" className="w-full h-auto rounded-lg" />

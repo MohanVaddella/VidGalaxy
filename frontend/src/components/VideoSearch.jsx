@@ -7,7 +7,7 @@ const VideoClassify = () => {
     useEffect(() => {
         // Redirect to the specified endpoint
         /* navigate("http://localhost:80/"); */
-        window.location.href = "http://localhost:80/";
+        window.location.href = "http://localhost:80/search";
     }, []);
 
     return (
@@ -20,3 +20,4 @@ const VideoClassify = () => {
 };
 
 export default VideoClassify;
+

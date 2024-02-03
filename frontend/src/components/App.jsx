@@ -9,7 +9,7 @@ import NotFound from "./NotFound";
 import Home from "./Home";
 import Profile from "./Profile";
 import VideoGallery from "./VideoGallery";
-import GenreCatalogue from "./GenreCatalogue";
+import VideoSearch from "./VideoSearch";
 import VideoClassify from "./VideoClassify";
 import Analytics from "./Analytics";
 
@@ -42,8 +42,22 @@ function App() {
             </ProtectRoute>
           }
         />
-        <Route path="/genrecatalogue" element={<GenreCatalogue />} />
-        <Route path="/videoclassify" element={<VideoClassify />} />
+        <Route
+          path="/videosearch"
+          element={
+            <ProtectRoute>
+              <VideoSearch />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/videoclassify"
+          element={
+            <ProtectRoute>
+              <VideoClassify />
+            </ProtectRoute>
+          }
+        />
         <Route
           path="/analytics"
           element={
