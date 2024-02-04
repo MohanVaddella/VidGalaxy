@@ -117,8 +117,53 @@ const VideoGallery = () => {
       }
   };
 
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  // Function to handle opening the share modal
+  const openShareModal = (video) => {
+    setSelectedVideo(video);
+    setShowShareModal(true);
+  };
+
+  // Function to handle closing the share modal
+  const closeShareModal = () => {
+    setSelectedVideo(null);
+    setShowShareModal(false);
+  };
+
   return (
     <div>
+    {showShareModal && selectedVideo && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white p-8 rounded-lg z-50">
+      <p className="text-xl font-semibold mb-4">Share Video</p>
+      <div className="flex items-center mb-4">
+        <input
+          type="text"
+          value={selectedVideo.fileUrl}
+          readOnly
+          className="flex-grow border p-2 rounded mr-2"
+        />
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(selectedVideo.fileUrl);
+            toast.success("URL copied to clipboard");
+          }}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Copy
+        </button>
+      </div>
+      <button
+        onClick={closeShareModal}
+        className="bg-gray-700 text-white px-4 py-2 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <HeaderOne />
       <section
@@ -173,12 +218,19 @@ const VideoGallery = () => {
                       )}
                       <div className="inset-0 flex items-center justify-center">
                       <button
-                onClick={() => removeVideo(video._id)}
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
-              >
-                Delete
-              </button>
-              </div>
+                        onClick={() => openShareModal(video)}
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2"
+                      >
+                        Share
+                      </button>
+                      <button
+                        onClick={() => removeVideo(video._id)}
+                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                      >
+                        Delete
+                      </button>
+              
+                    </div>
                     </div>
                   ))}
                 </div>
@@ -191,7 +243,7 @@ const VideoGallery = () => {
       </section>
       <Footer />
     </div>
-  );
-};
+    );
+  };
 
 export default VideoGallery;
