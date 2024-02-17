@@ -25,7 +25,7 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     try {
-      if (enteredUsername && OTP) {
+      if (enteredUsername && OTP && OTP.length === 6) {
         let { status } = await verifyOTP({
           username: enteredUsername,
           code: OTP,
@@ -94,9 +94,18 @@ const ForgotPassword = () => {
                   pattern="[a-zA-Z0-9]{8,12}"
                   title="Alphanumeric, 8-12 characters"
                   onChange={(e) => {
-                    setEnteredUsernameLocal(e.target.value);
-                    setEnteredUsername(e.target.value);
-                  }}
+                    const { value } = e.target;
+                    if (value.length >= 9 && value.length <= 12) {
+                        setEnteredUsernameLocal(value);
+                        setEnteredUsername(value);
+                    } else {
+                        // Clear OTP input if username length is invalid
+                        setEnteredUsernameLocal("");
+                        setEnteredUsername("");
+                        setOTP("");
+                    }
+                }}
+                
                 />
               </div>
               <div>

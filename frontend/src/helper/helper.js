@@ -78,22 +78,25 @@ export async function updateUser(response){
 }
 
 /** generate OTP */
-export async function generateOTP(username){
+export async function generateOTP(username) {
     try {
-        const { data : { code }, status } = await axios.get('/api/generateOTP', { params : { username }});
+        if (username.length >= 8 && username.length <= 12) { // Check if username length is valid
+            const { data: { code }, status } = await axios.get('/api/generateOTP', { params: { username } });
 
-        // send mail with the OTP
-        if(status === 201){
-            let { data : { email }} = await getUser({ username });
-            let text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
-            await axios.post('/api/registerMail', { username, userEmail: email, text, subject : "Password Recovery OTP"})
+            // send mail with the OTP
+            if (status === 201) {
+                let { data: { email } } = await getUser({ username });
+                let text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
+                await axios.post('/api/registerMail', { username, userEmail: email, text, subject: "Password Recovery OTP" })
+            }
+            return Promise.resolve(code);
+        } else {
+            throw new Error("Username length is invalid");
         }
-        return Promise.resolve(code);
-
     } catch (error) {
         return Promise.reject({ error });
     }
-} 
+}
 
 /** verify OTP */
 export async function verifyOTP({ username, code }){

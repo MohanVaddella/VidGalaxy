@@ -92,7 +92,7 @@ export async function login(req, res){
                         const token = jwt.sign({
                             userId: user._id,
                             username: user.username
-                        }, ENV.JWT_SECRET , { expiresIn : "24h"});
+                        }, ENV.JWT_SECRET , { expiresIn : "1h"});
 
                         return res.status(201).send({
                             msg: "Login Successful...!",
