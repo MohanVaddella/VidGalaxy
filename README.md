@@ -14,6 +14,23 @@ Video classification and Similar videos Recommendation system
 - Video Recommendations
 - Video Sharing
 
+![image](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/3e741f3e-aaaa-4320-ad85-9d16dcdfb861)
+
+
+#### Models Workflow
+
+- Data Collection Pipeline
+
+  ![WhatsApp Image 2024-03-14 at 15 25 39_93a3e792](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/6d67a310-0ebd-4f56-a320-025f380173a4)
+
+- Training Pipeline
+
+  ![WhatsApp Image 2024-03-14 at 15 27 32_292543c3](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/5b4905b2-3d41-46ac-9810-5931c0d9c152)
+
+- Prediction Endpoint
+
+![WhatsApp Image 2024-03-14 at 15 27 48_09820ce3](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/858ccb63-0bcb-4c9f-a8b7-526a3df338bd)
+
 #### GUI Screens
 
 - Home Screen
