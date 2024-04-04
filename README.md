@@ -4,7 +4,7 @@
 
 Video classification and Similar videos Recommendation system
 
-#### Use Cases
+## Use Cases
 
 - User Authentication
 - Video Upload
@@ -17,7 +17,7 @@ Video classification and Similar videos Recommendation system
 ![image](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/3e741f3e-aaaa-4320-ad85-9d16dcdfb861)
 
 
-#### Models Workflow
+## Models Workflow
 
 - Data Collection Pipeline
 
@@ -31,7 +31,7 @@ Video classification and Similar videos Recommendation system
 
 ![WhatsApp Image 2024-03-14 at 15 27 48_09820ce3](https://github.com/MohanVaddella/VidGalaxy/assets/84492994/858ccb63-0bcb-4c9f-a8b7-526a3df338bd)
 
-#### GUI Screens
+## GUI Screens
 
 - Home Screen
   
