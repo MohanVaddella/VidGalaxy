@@ -1,0 +1,41 @@
+@startuml
+
+package "User Authentication" {
+
+  component [ClientApp] <<executable>> as client {
+    component [login.html] <<file>>
+    component [register.html] <<file>>
+    component [script.js] <<file>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [UserController] <<executable>> 
+    component [AuthService] <<executable>>
+    interface [IUserService] as IUserServiceOut
+  }
+
+  database "SQL User Database" as db
+  
+  server -> db
+  client -> server
+
+  interface "IAuthentication" as IAuthIn
+  IAuthIn <.. [UserController]
+  IAuthIn <.. [AuthService]
+
+  note "IAuthentication defines login()\nand register() interfaces" as note1
+  note1 .. IAuthIn
+
+}
+
+node "External Libraries" {
+  component [Bcrypt] <<library>>
+  component [JWT] <<library>> 
+}
+
+server ..> [Bcrypt] 
+server ..> [JWT]
+
+IUserServiceOut ..> [UserController]
+
+@enduml

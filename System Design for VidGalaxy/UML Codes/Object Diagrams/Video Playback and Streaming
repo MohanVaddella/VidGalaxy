@@ -1,0 +1,41 @@
+@startuml
+!define OBJECT object
+
+OBJECT isroUser1 {
+  isroUserId: 102
+  isroUserRole: "Viewer"
+  classifyVideo(): "Educational"
+  searchVideo(): "Mars Mission"
+  viewStats(): "Viewed"
+  shareVideo(): "Shared"
+}
+
+OBJECT generalUser1 {
+  generalUserId: 203
+  searchVideo(): "Mars Mission"
+  viewVideoContent(): "Viewing Mars Mission"
+}
+
+OBJECT video1 {
+  videoId: 201
+  title: "Mars Mission"
+  description: "Documentary on Mars Mission"
+  genre: "Educational"
+  filePath: "/videos/mars_mission.mp4"
+  metadata: "Title: Mars Mission, Description: Documentary on Mars Mission, Duration: 120 min, Tags: [Mars, Mission, Space], Keywords: [Mars, Space, Exploration]"
+  play(): "Playing Mars Mission"
+}
+
+OBJECT database1 {
+  addUser(): true
+  getUserById(): "Retrieved User by ID"
+  addVideo(): true
+  getVideoById(): "Retrieved Video by ID"
+  updateUser(): true
+  updateVideo(): true
+}
+
+isroUser1 --> video1: Views
+generalUser1 --> video1: Views
+video1 --> database1: Uses
+@enduml

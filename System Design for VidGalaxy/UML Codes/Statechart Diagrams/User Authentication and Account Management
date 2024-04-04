@@ -1,0 +1,60 @@
+@startuml
+' Define the states
+state "User Authentication" as UA {
+  state "Unauthenticated" as Unauth {
+    [*] --> Initial
+    state "Initial" as Initial
+    Initial --> LoggingIn: StartLogin
+  }
+
+  state "LoggingIn" as LoggingIn {
+    state "EnteringCredentials" as EnterCred
+    EnterCred --> CredentialsEntered: CredentialsEntered
+  }
+
+  state "CredentialsEntered" as CredentialsEntered {
+    state "ValidatingCredentials" as ValidateCred
+    ValidateCred --> CredentialsValid: CredentialsValid
+    ValidateCred --> CredentialsInvalid: CredentialsInvalid
+  }
+
+  state "CredentialsValid" as CredentialsValid {
+    state "GeneratingSession" as GenerateSession
+    GenerateSession --> SessionGenerated: SessionGenerated
+  }
+
+  state "CredentialsInvalid" as CredentialsInvalid {
+    state "DisplayingError" as DisplayError
+    DisplayError --> Unauth: RetryLogin
+  }
+
+  state "SessionGenerated" as SessionGenerated {
+    state "Authenticated" as Auth {
+      state "ActiveSession" as ActiveSession
+      ActiveSession --> LoggingOut: Logout
+    }
+    Auth --> Unauth: SessionExpired
+  }
+
+  state "LoggingOut" as LoggingOut {
+    state "EndingSession" as EndSession
+    EndSession --> Unauth: SessionEnded
+  }
+}
+
+' Define the transitions
+Unauth --> LoggingIn: StartLogin
+LoggingIn --> CredentialsEntered: CredentialsEntered
+CredentialsEntered --> ValidateCred: Validate
+ValidateCred --> CredentialsValid: Valid
+ValidateCred --> CredentialsInvalid: Invalid
+CredentialsValid --> GenerateSession: GenerateSession
+GenerateSession --> SessionGenerated: SessionGenerated
+CredentialsInvalid --> DisplayError: DisplayError
+DisplayError --> Unauth: RetryLogin
+SessionGenerated --> Auth: Authenticated
+Auth --> Unauth: SessionExpired
+Auth --> LoggingOut: Logout
+LoggingOut --> EndSession: EndSession
+EndSession --> Unauth: SessionEnded
+@enduml

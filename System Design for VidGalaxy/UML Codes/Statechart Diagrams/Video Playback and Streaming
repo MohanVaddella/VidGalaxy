@@ -1,0 +1,45 @@
+@startuml
+state "Video System" as VideoSystem {
+  [*] --> Idle : Initialize System
+  
+  state "Idle" as Idle {
+    entry: "Display video thumbnail"
+    exit: "Load video buffer"
+  }
+
+  state "Buffering" as Buffering {
+    entry: "Start buffering"
+    do: "Load video data"
+    exit: "Buffering complete"
+  }
+
+  state "Playing" as Playing {
+    entry: "Begin playback"
+    do: "Stream video content"
+    exit: "Video paused or stopped"
+  }
+
+  state "Paused" as Paused {
+    entry: "Pause video"
+    exit: "Ready to resume"
+  }
+
+  state "Stopped" as Stopped {
+    entry: "Stop video"
+    exit: "Reset to start"
+  }
+
+  state "Error" as Error {
+    entry: "Display error message"
+    exit: "Return to Idle"
+  }
+
+  Idle -down-> Buffering: Play clicked
+  Buffering -down-> Playing: Buffer complete
+  Playing -right-> Paused: Pause clicked
+  Paused -left-> Playing: Resume clicked
+  Playing -up-> Stopped: Stop clicked
+  Playing --> Error: Playback error
+  Buffering --> Error: Buffering failed
+  Error -up-> Idle: Reset
+@enduml

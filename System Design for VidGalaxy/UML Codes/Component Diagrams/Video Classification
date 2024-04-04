@@ -1,0 +1,42 @@
+@startuml
+
+package "Video Classification" {
+
+  component [ClientApp] <<executable>> as client {
+    component [ClassifierUI] <<document>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [ClassificationController] <<executable>>
+    component [ClassificationService] <<executable>>
+    interface [IGenreDatabase] as IGenreDbOut
+  }
+
+  database "Genre Database" as db
+  
+  component [X3D Model] <<executable>> as ml
+
+  client -> server
+  server -> db
+  server -> ml
+
+  interface "IClassification" as IClassificationIn
+  IClassificationIn <.. [ClassificationController]
+  IClassificationIn <.. [ClassificationService]
+
+  IGenreDbOut ..> [ClassificationService]  
+
+  note "IClassification provides classifyVideo()\ninterface using ML model" as note1
+  note1 .. IClassificationIn
+
+}
+
+node "External Libraries" {
+  component [TensorFlow] <<library>>
+  component [Keras] <<library>>  
+}
+
+ml ..> [TensorFlow]
+ml ..> [Keras]
+
+@enduml

@@ -1,0 +1,87 @@
+@startuml
+start
+
+:User logs in;
+:Enter Username and Password;
+
+fork
+:Select video for classification;
+fork again
+:Verify user credentials;
+:Authentication System communicates with Database;
+fork end
+
+if (Credentials Valid?) then (Yes)
+  :Credentials are Valid;
+else (No)
+  :Display Error Message;
+  stop
+endif
+
+:Analyze video content;
+note right
+  Object: VideoAnalyzer
+  Attributes:
+  - videoPath: video.filePath
+  - analysisType: "Content Analysis"
+end note
+:Content analyzed;
+
+:Assign genre to video;
+note right
+  Object: Genre
+  Attributes:
+  - genreId
+  - name
+end note
+:Genre assigned;
+
+:Generate metadata for video;
+note right
+  Object: Metadata
+  Attributes:
+  - title
+  - description
+  - timestamps
+  - duration
+  - tags
+  - keywords
+end note
+:Metadata generated;
+
+if (Any errors during classification?) then (yes)
+  :Display error message;
+  stop
+else (no)
+  :Store classification data in database;
+  
+  if (Edit classification?) then (yes)
+    :Edit video classification;
+    :Save changes;
+    :Return to video management;
+  else if (Delete classification?) then (yes)
+    :Confirm deletion;
+    :Delete classification from database;
+    stop
+  else (no)
+    :View video classification;
+    stop
+  endif
+endif
+
+' Define the objects involved in the flow
+note right 
+  Object: User
+  Attributes:
+  - username
+  - password
+end note
+
+note right 
+  Object: Database
+  Attributes:
+  - users
+  - videos
+  - classifications
+end note
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+!define ACTOR actor
+
+ACTOR User as user
+participant "user1: User" as user1
+participant "auth: IAuthentication" as auth
+participant "notif: INotificationManagement" as notif
+participant "notification1: Notification" as notification1
+participant "emailService: EmailService" as emailService
+
+user -> user1: create("johnDoe", "encryptedPassword")
+activate user1
+
+user1 -> auth: register()
+activate auth
+
+auth -> user1: sendVerificationEmail()
+
+
+user1 -> emailService: sendEmail("john.doe@example.com", "Verification Email")
+activate emailService
+
+emailService --> user1: EmailSentSuccess
+deactivate emailService
+
+user1 --> auth: EmailSent
+
+
+auth --> user: RegistrationSuccess
+deactivate auth
+deactivate user1
+
+user -> user1: login("johnDoe", "encryptedPassword")
+activate user1
+
+user1 -> auth: login()
+activate auth
+
+auth -> user1: authenticate()
+
+user1 --> auth: Authenticated
+
+
+auth -> notif: sendNotification()
+activate notif
+
+notif -> notification1: createNotification("Welcome to the System!", user1)
+activate notification1
+
+notification1 --> notif: NotificationCreated
+deactivate notification1
+
+notif --> auth: NotificationSent
+deactivate notif
+
+auth --> user: LoginSuccess
+deactivate auth
+
+deactivate user1
+@enduml

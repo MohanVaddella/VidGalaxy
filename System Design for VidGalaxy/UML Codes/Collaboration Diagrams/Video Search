@@ -1,0 +1,29 @@
+@startuml
+!define OBJECT object
+!define NOTE note
+!define CONTROL control
+!define MESSAGE message
+
+OBJECT User
+OBJECT VideoLibrary
+OBJECT Video
+OBJECT SearchEngine
+
+note right of User: Initiates video search by \nproviding keywords
+note right of VideoLibrary: Holds collection of videos
+note right of Video: Represents individual video \nwith metadata
+note right of SearchEngine: Performs search on \nvideo metadata
+
+User -> SearchEngine: searchVideo("Mars Mission")
+SearchEngine -> VideoLibrary: findVideos("Mars Mission")
+
+
+VideoLibrary -> SearchEngine: video1
+
+SearchEngine -> User: video1
+
+
+User -> Video: playVideo()
+
+Video -> User: playVideo()
+@enduml

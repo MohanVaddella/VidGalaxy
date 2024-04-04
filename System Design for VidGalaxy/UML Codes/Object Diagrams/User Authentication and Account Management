@@ -1,0 +1,53 @@
+@startuml
+!define OBJECT object
+
+OBJECT user1 {
+  userId = 1
+  firstName = "John"
+  lastName = "Doe"
+  email = "john.doe@example.com"
+  phoneNumber = "123-456-7890"
+  username = "johnDoe"
+  password = "encryptedPassword"
+  profilePicture = "imagePath"
+  authenticated = true
+  registrationDate = "2023-09-28"
+}
+
+OBJECT admin1 {
+  adminId = 1
+  adminName = "Admin User"
+}
+
+OBJECT isroUser1 {
+  isroUserId = 2
+  isroUserRole = "Video Classifier"
+}
+
+OBJECT generalUser1 {
+  generalUserId = 3
+}
+
+OBJECT notification1 {
+  notificationID = 1
+  message = "Welcome to the System!"
+  users = "user1"
+}
+
+INTERFACE IAuthentication {
+  register()
+  login()
+  logout()
+}
+
+INTERFACE INotificationManagement {
+  sendNotification()
+}
+
+user1 --|> admin1: Inheritance
+user1 --|> isroUser1: Inheritance
+user1 --|> generalUser1: Inheritance
+user1 --|> IAuthentication: realizes
+notification1 ..> INotificationManagement: includes
+user1 --> notification1: Receives
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+artifact "Web Browser" as browser
+artifact "Mobile App" as app
+
+node "Load Balancer" as lb
+node "Web Server" as web
+node "Application Server" as appserver
+
+package "Authentication Service" as auth {
+component [Client] as authclient
+component [Server] as authserver
+
+component [Registration] as reg
+component [Login] as login
+component [Session Management] as session
+
+database "User DB" as userdb {
+folder "User Accounts" as accounts
+}
+}
+
+browser -- web
+web -- authclient
+app -- authclient
+
+authclient -- reg
+authclient -- login
+login -- session
+session -- authserver
+
+reg -- accounts
+login -- accounts
+authserver -- userdb
+@enduml

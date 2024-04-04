@@ -1,0 +1,37 @@
+@startuml
+
+package "Video Sharing" {
+
+  component [ClientApp] <<executable>> as client {
+    component [ShareVideoUI] <<document>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [SharingController] <<executable>>
+    component [SharingService] <<executable>>
+    interface [IUserAccessDB] as IUserAccessDbOut
+  }
+
+  database "User Database" as db
+
+  client -> server 
+  server -> db
+
+  interface "ISharingService" as ISharingServiceIn
+  ISharingServiceIn <.. [SharingController]
+  ISharingServiceIn <.. [SharingService]
+
+  IUserAccessDbOut ..> [SharingService]
+
+  note "ISharingService provides \nshareVideo() interface" as note1
+  note1 .. ISharingServiceIn
+
+}
+
+node "External Libraries" {
+  component [SendGrid] <<library>>
+}
+
+server ..> [SendGrid]
+
+@enduml

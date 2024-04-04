@@ -1,0 +1,55 @@
+@startuml
+!define OBJECT object
+
+OBJECT isroUser1 {
+  isroUserId: 101
+  isroUserRole: "Classifier"
+}
+
+OBJECT video1 {
+  videoId: 1001
+  title: "Mars Mission"
+  description: "Documentary on Mars Mission"
+  genre: genre1
+  filePath: "/videos/mars_mission.mp4"
+  metadata: metadata1
+}
+
+OBJECT genre1 {
+  genreId: 1
+  name: "Documentary"
+}
+
+OBJECT metadata1 {
+  title: "Mars Mission"
+  description: "A detailed documentary on Mars Mission by ISRO"
+  timestamps: "00:00:00"
+  duration: 3600
+  tags: ["Mars", "Mission", "ISRO"]
+  keywords: ["Space", "Exploration", "Mars"]
+}
+
+OBJECT videoClassification1 {
+  classificationId: 1
+  video: video1
+  userId: 101
+  selectedGenre: genre1
+}
+
+OBJECT database1 {
+  users: [isroUser1]
+  videos: [video1]
+}
+
+OBJECT iDataManagement1 {
+  synchronizeData: "Synchronized"
+}
+
+isroUser1 --> videoClassification1: creates
+videoClassification1 --> video1: classifies
+video1 --> genre1: belongs to
+video1 --> metadata1: contains
+database1 --> iDataManagement1: includes
+isroUser1 --> database1: uses
+video1 --> database1: storedIn
+@enduml

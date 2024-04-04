@@ -1,0 +1,46 @@
+@startuml
+!define ACTOR actor
+
+ACTOR "ISROUser\n(isroUser1)" as isroUser
+participant "IVideoManagement\n(iVideoManagement1)" as iVideoManagement
+participant "Video\n(video1)" as video
+participant "Database\n(database1)" as database
+
+
+
+isroUser -> iVideoManagement: uploadVideo()
+activate iVideoManagement
+activate isroUser
+iVideoManagement --> isroUser: Video Uploaded Successfully
+deactivate iVideoManagement
+
+isroUser -> video: classifyVideo()
+activate video
+video --> isroUser: Classified as "Educational"
+deactivate video
+
+isroUser -> video: editMetadata()
+activate video
+video --> isroUser: Metadata Edited Successfully
+deactivate video
+
+isroUser -> video: shareVideo()
+activate video
+video --> isroUser: Video Shared Successfully
+deactivate video
+
+isroUser -> database: addVideo()
+activate database
+database --> isroUser: true (Video Added)
+deactivate database
+
+isroUser -> database: getVideoById()
+activate database
+database --> isroUser: Retrieved Video by ID
+deactivate database
+
+isroUser -> isroUser: viewStats()
+
+isroUser --> isroUser: "Viewed Mars Mission"
+deactivate isroUser
+@enduml

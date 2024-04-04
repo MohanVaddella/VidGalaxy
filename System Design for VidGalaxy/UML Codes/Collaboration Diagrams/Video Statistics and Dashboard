@@ -1,0 +1,27 @@
+@startuml
+!define OBJECT object
+
+!define NOTE note
+!define MESSAGE message
+
+OBJECT User
+OBJECT Dashboard
+
+OBJECT Database
+OBJECT Video
+
+note right of User: Views dashboard for\nvideo statistics
+
+note right of Dashboard: Displays statistics for\nvideos
+note right of Database: Stores videos and\nassociated metadata
+note right of Video: Contains metadata like\nviews and genre
+
+User -> Dashboard: viewStats()
+Dashboard -> User: displayStats()
+
+User -> Dashboard: viewGenreDistribution()
+Dashboard -> User: displayGenreDistribution()
+
+Dashboard -> Database: getVideoStats()
+
+@enduml

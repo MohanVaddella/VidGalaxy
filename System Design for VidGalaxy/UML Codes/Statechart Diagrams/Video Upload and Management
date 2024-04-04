@@ -1,0 +1,70 @@
+@startuml
+' Define the states
+state "Video Management Lifecycle" as VML {
+
+  state "Preparation" as Prep {
+    [*] --> Ready
+    state "Ready" as Ready
+    Ready --> Uploading: StartUpload
+  }
+
+  state "Uploading" as Uploading {
+    state "TransferringData" as TransferData
+    TransferData --> DataTransferred: DataTransferred
+  }
+
+  state "DataTransferred" as DataTransferred {
+    state "StoringVideo" as StoreVideo
+    StoreVideo --> VideoStored: VideoStored
+    StoreVideo --> StorageError: Error
+  }
+
+  state "VideoStored" as VideoStored {
+    state "AddingMetadata" as AddMeta
+    AddMeta --> MetadataAdded: MetadataAdded
+  }
+
+  state "StorageError" as StorageError {
+    state "DisplayingUploadError" as DisplayUploadError
+    DisplayUploadError --> Prep: RetryUpload
+  }
+
+  state "MetadataAdded" as MetadataAdded {
+    state "ManagingVideo" as ManageVideo {
+      state "ViewingVideo" as ViewVideo
+      ViewVideo --> Editing: Edit
+      ViewVideo --> Deleting: Delete
+    }
+    ManageVideo --> Archived: Archive
+  }
+
+  state "Editing" as Editing {
+    state "MakingChanges" as MakeChanges
+    MakeChanges --> ManageVideo: ChangesSaved
+  }
+
+  state "Deleting" as Deleting {
+    state "ConfirmingDeletion" as ConfirmDelete
+    ConfirmDelete --> Prep: VideoDeleted
+  }
+}
+
+' Define the transitions
+Prep --> Uploading: StartUpload
+Uploading --> DataTransferred: DataTransferred
+DataTransferred --> StoreVideo: Store
+StoreVideo --> VideoStored: Stored
+StoreVideo --> StorageError: Error
+VideoStored --> AddMeta: AddMetadata
+AddMeta --> MetadataAdded: MetadataAdded
+StorageError --> DisplayUploadError: DisplayError
+DisplayUploadError --> Prep: RetryUpload
+MetadataAdded --> ManageVideo: Manage
+ManageVideo --> Archived: Archive
+ManageVideo --> Editing: Edit
+Editing --> MakeChanges: MakeChanges
+MakeChanges --> ManageVideo: ChangesSaved
+ManageVideo --> Deleting: Delete
+Deleting --> ConfirmDelete: Confirm
+ConfirmDelete --> Prep: VideoDeleted
+@enduml

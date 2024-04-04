@@ -1,0 +1,27 @@
+@startuml
+!define OBJECT object
+!define NOTE note
+!define MESSAGE message
+
+OBJECT User
+OBJECT VideoPlayer
+OBJECT Video
+OBJECT CDN
+
+note right of User: Requests video playback
+note right of VideoPlayer: Handles video playback
+note right of Video: Provides video content
+note right of CDN: Handles video delivery
+
+User -> VideoPlayer: playVideo()
+
+VideoPlayer -> CDN: getStream()
+
+
+
+
+VideoPlayer -> Video: getContent()
+
+
+VideoPlayer --> User: playVideo()
+@enduml

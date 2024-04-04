@@ -1,0 +1,37 @@
+@startuml
+
+package "Video Search" {
+
+  component [ClientApp] <<executable>> as client {
+    component [SearchUI] <<document>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [SearchController] <<executable>>
+    component [SearchService] <<executable>>
+    interface [ISearchIndex] as ISearchIndexOut
+  }
+
+  database "Video Database" as db
+  
+  client -> server
+  server -> db
+
+  interface "ISearch" as ISearchIn
+  ISearchIn <.. [SearchController]
+  ISearchIn <.. [SearchService]
+
+  ISearchIndexOut ..> [SearchService]
+
+  note "ISearch provides searchVideo()\ninterface" as note1 
+  note1 .. ISearchIn
+
+} 
+
+node "External Libraries" {
+  component [ElasticSearch] <<library>>
+}
+
+server ..> [ElasticSearch]
+
+@enduml

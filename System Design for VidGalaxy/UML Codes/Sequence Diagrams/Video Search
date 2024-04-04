@@ -1,0 +1,42 @@
+@startuml
+participant "isroUser1: ISROUser" as ISROUser
+participant "generalUser1: GeneralUser" as GeneralUser
+participant "iVideoManagement1: IVideoManagement" as IVideoManagement
+participant "video1: Video" as Video
+participant "database1: Database" as Database
+
+activate ISROUser
+ISROUser -> IVideoManagement: uploadVideo()
+activate IVideoManagement
+ISROUser <-- IVideoManagement: video1
+deactivate IVideoManagement
+
+ISROUser -> IVideoManagement: editMetadata()
+activate IVideoManagement
+ISROUser <-- IVideoManagement: "Edited"
+deactivate IVideoManagement
+
+ISROUser -> Database: searchVideo("Mars Mission")
+activate Database
+ISROUser <-- Database: video1
+deactivate Database
+
+ISROUser -> Video: play()
+activate Video
+ISROUser <-- Video: "Played"
+deactivate Video
+deactivate ISROUser
+
+activate GeneralUser
+GeneralUser -> Database: searchVideo("Mars Mission")
+activate Database
+GeneralUser <-- Database: video1
+deactivate Database
+
+GeneralUser -> Video: play()
+activate Video
+GeneralUser <-- Video: "Played"
+deactivate Video
+deactivate GeneralUser
+
+@enduml

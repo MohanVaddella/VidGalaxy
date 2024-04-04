@@ -1,0 +1,63 @@
+@startuml
+!define ACTOR actor
+
+ACTOR "ISROUser\n(isroUser1)" as isroUser
+ACTOR "GeneralUser\n(generalUser1)" as generalUser
+participant "Video\n(video1)" as video
+participant "Database\n(database1)" as database
+
+
+
+isroUser -> video: searchVideo("Mars Mission")
+activate isroUser
+activate video
+video --> isroUser: "Mars Mission Found"
+
+
+isroUser -> video: play()
+
+video --> isroUser: "Playing Mars Mission"
+deactivate video
+
+isroUser -> isroUser: viewStats()
+
+isroUser --> isroUser: "Viewed Mars Mission"
+
+deactivate isroUser
+generalUser -> video: searchVideo("Mars Mission")
+activate generalUser
+activate video
+video --> generalUser: "Mars Mission Found"
+
+
+generalUser -> video: play()
+
+video --> generalUser: "Playing Mars Mission"
+
+
+generalUser -> video: viewVideoContent()
+
+video --> generalUser: "Viewing Mars Mission"
+deactivate video
+deactivate generalUser
+isroUser -> database: getUserById()
+activate isroUser
+activate database
+database --> isroUser: "Retrieved User by ID"
+deactivate isroUser
+
+
+generalUser -> database: getUserById()
+activate generalUser
+database --> generalUser: "Retrieved User by ID"
+
+deactivate generalUser
+
+video -> database: getVideoById()
+activate video
+
+database --> video: "Retrieved Video by ID"
+deactivate database
+deactivate video
+deactivate isroUser
+@enduml

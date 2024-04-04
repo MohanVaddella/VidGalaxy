@@ -1,0 +1,72 @@
+@startuml
+' Define the states
+state "Video Classification" as VC {
+
+  state "ReadyForClassification" as Ready {
+    [*] --> Initial
+    state "Initial" as Initial
+    Initial --> Classifying: StartClassification
+  }
+
+  state "Classifying" as Classifying {
+    state "AnalyzingVideoContent" as Analyzing
+    Analyzing --> DataAnalyzed: DataAnalyzed
+  }
+
+  state "DataAnalyzed" as DataAnalyzed {
+    state "AssigningGenre" as AssigningGenre
+    AssigningGenre --> GenreAssigned: GenreAssigned
+    AssigningGenre --> GenreNotAssigned: GenreNotAssigned
+  }
+
+  state "GenreAssigned" as GenreAssigned {
+    state "GeneratingMetadata" as GeneratingMetadata
+    GeneratingMetadata --> MetadataGenerated: MetadataGenerated
+  }
+
+  state "GenreNotAssigned" as GenreNotAssigned {
+    state "DisplayingError" as DisplayError
+    DisplayError --> Ready: RetryClassification
+  }
+
+  state "MetadataGenerated" as MetadataGenerated {
+    state "StoringClassificationData" as Storing
+    Storing --> DataStored: DataStored
+  }
+
+  state "Storing" as Storing {
+    state "StoringInDatabase" as StoringInDB
+    StoringInDB --> DataStored: DataStored
+  }
+
+  state "DataStored" as DataStored {
+    state "Classified" as Classified {
+      state "VideoAvailable" as VideoAvailable
+      VideoAvailable --> Declassifying: Declassify
+    }
+    Classified --> Ready: DataExpired
+  }
+
+  state "Declassifying" as Declassifying {
+    state "RemovingData" as RemovingData
+    RemovingData --> Ready: DataRemoved
+  }
+}
+
+' Define the transitions
+Ready --> Classifying: StartClassification
+Classifying --> DataAnalyzed: DataAnalyzed
+DataAnalyzed --> AssigningGenre: AssignGenre
+AssigningGenre --> GenreAssigned: GenreAssigned
+AssigningGenre --> GenreNotAssigned: GenreNotAssigned
+GenreAssigned --> GeneratingMetadata: GenerateMetadata
+GeneratingMetadata --> MetadataGenerated: MetadataGenerated
+GenreNotAssigned --> DisplayError: DisplayError
+DisplayError --> Ready: RetryClassification
+MetadataGenerated --> Storing: StoreData
+Storing --> DataStored: DataStored
+Classified --> Ready: DataExpired
+Classified --> Declassifying: Declassify
+Declassifying --> RemovingData: RemoveData
+RemovingData --> Ready: DataRemoved
+@enduml

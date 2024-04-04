@@ -1,0 +1,36 @@
+@startuml
+!define OBJECT object
+!define PARTICIPANT participant
+!define CONTROL control
+!define MESSAGE message
+!define RETURN return
+
+OBJECT ISROUser
+OBJECT VideoClassification
+OBJECT Video
+OBJECT Genre
+OBJECT Metadata
+OBJECT Database
+OBJECT IDataManagement
+
+
+
+ISROUser -> VideoClassification: classifyVideo(video1);
+
+
+VideoClassification -> Video: setGenre(genre1);
+
+
+Video -> Genre: assignGenre();
+
+
+
+Video -> Metadata: generateMetadata();
+
+
+
+VideoClassification -> Database: storeClassification();
+
+Database -> IDataManagement: synchronizeData();
+note right : Initiates data synchronization
+@enduml

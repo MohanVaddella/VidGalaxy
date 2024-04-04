@@ -1,0 +1,25 @@
+@startuml
+!define OBJECT object
+!define NOTE note
+
+!define MESSAGE message
+
+OBJECT ISROUser
+OBJECT Video
+OBJECT Database
+OBJECT ShareService
+
+note right of ISROUser: Uploads and shares videos
+note right of Video: Contains video data
+note right of Database: Stores video metadata
+note right of ShareService: Handles video sharing
+
+ISROUser -> Database: storeVideoMetadata()
+
+
+ISROUser -> Video: getVideo()
+
+
+ISROUser -> ShareService: shareVideo(video)
+
+@enduml

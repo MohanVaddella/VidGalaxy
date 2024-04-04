@@ -1,0 +1,65 @@
+@startuml
+' Define the states
+state "Video Search System" as VSS {
+
+  ' Initial State
+  [*] --> NotSearching
+
+  state NotSearching {
+    entry: "Awaiting User Input"
+    NotSearching --> InputSearch: UserInitiatesSearch
+  }
+
+  state InputSearch {
+    entry: "Display Search Bar"
+    InputSearch --> Searching: SubmitSearch
+    InputSearch --> NotSearching: CancelSearch
+  }
+
+  state Searching {
+    entry: "Query Database"
+    Searching --> ResultsFound: ResultsAvailable
+    Searching --> NoResults: NoResultsAvailable
+    Searching --> NotSearching: CancelSearch
+  }
+
+  state ResultsFound {
+    entry: "Display Results"
+    ResultsFound --> VideoSelected: UserSelectsVideo
+    ResultsFound --> NotSearching: ReturnToSearch
+  }
+
+  state NoResults {
+    entry: "Display No Results Message"
+    NoResults --> InputSearch: RetrySearch
+    NoResults --> NotSearching: CancelSearch
+  }
+
+  state VideoSelected {
+    entry: "Display Video Details"
+    VideoSelected --> WatchVideo: UserPlaysVideo
+    VideoSelected --> NotSearching: ReturnToSearch
+  }
+
+  state WatchVideo {
+    entry: "Play Video"
+    WatchVideo --> NotSearching: VideoEnds
+  }
+
+  ' History State
+  state SearchHistory {
+    
+    SearchHistory --> InputSearch: UserReturns
+  }
+}
+
+' Define the transitions
+NotSearching --> InputSearch: UserAccessesSearch
+InputSearch --> Searching: EnterKeyword
+Searching --> ResultsFound: ResultsAvailable
+Searching --> NoResults: NoResultsAvailable
+ResultsFound --> VideoSelected: UserSelectsVideo
+VideoSelected --> WatchVideo: UserPlaysVideo
+WatchVideo --> NotSearching: VideoEnds
+NoResults --> InputSearch: RetrySearchOptionSelected
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+!define ACTIVITY activity
+!define ARROW -->
+!define FORK fork
+!define JOIN join
+
+:Enter Username and Password;
+
+fork
+  :Check Credentials;
+  fork again
+    :Authentication System verifies data;
+    :Authentication System communicates with Database;
+  fork end
+  if (Credentials Valid?) then (Yes)
+    :Credentials are Valid;
+  else (No)
+    :Display Error Message;
+    stop
+  endif
+
+  :Send Verification Email;
+  note right
+    Object: EmailService
+    Attributes:
+    - recipient: user.email
+    - subject: "Verification Email"
+  end note
+
+  :Wait for User Verification;
+  if (Email Verified?) then (yes)
+    :Login Successful;
+    stop
+  else (no)
+    :Login Failed;
+    stop
+  endif
+
+:Check User Role;
+if (Role == Admin) then (yes)
+  :Grant Admin Access;
+else (no)
+  if (Role == Moderator) then (yes)
+    :Grant Moderator Access;
+  else (no)
+    :Grant Regular User Access;
+  endif
+endif
+
+if (Authorized?) then (yes)
+  :Execute Action;
+else (no)
+  :Show Access Denied Message;
+  stop
+endif
+
+
+
+:Invalidate Session;
+:Redirect to Login Page;
+
+
+@enduml

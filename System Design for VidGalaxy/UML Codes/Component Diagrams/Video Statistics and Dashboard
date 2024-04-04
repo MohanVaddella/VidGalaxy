@@ -1,0 +1,42 @@
+@startuml
+
+package "Video Analytics" {
+
+  component [ClientApp] <<executable>> as client {
+    component [DashboardUI] <<document>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [AnalyticsController] <<executable>>
+    component [AnalyticsService] <<executable>>
+    interface [IStatsDatabase] as IStatsDbOut
+  }
+
+  database "Stats Database" as db
+
+  component [BigQuery] <<executable>> as bq
+
+  client -> server
+  server -> db
+  server -> bq
+
+  interface "IAnalytics" as IAnalyticsIn
+  IAnalyticsIn <.. [AnalyticsController]
+  IAnalyticsIn <.. [AnalyticsService]
+
+  IStatsDbOut ..> [AnalyticsService]
+
+  note "IAnalytics provides analytics()\nand dashboard() interfaces" as note1
+  note1 .. IAnalyticsIn
+
+}
+
+node "External Libraries" {
+  component [React] <<library>>
+  component [D3.js] <<library>>
+}
+
+client ..> [React] 
+client ..> [D3.js]
+
+@enduml

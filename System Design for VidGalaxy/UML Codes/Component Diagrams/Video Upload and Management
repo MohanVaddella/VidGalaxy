@@ -1,0 +1,40 @@
+@startuml
+
+package "Video Management" {
+
+  component [ClientApp] <<executable>> as client {
+    component [UploadForm] <<document>>
+    component [VideoList] <<document>>
+  }
+  
+  component [WebServer] <<executable>> as server {
+    component [VideoController] <<executable>>
+    component [VideoService] <<executable>>
+    interface [IVideoDatabase] as IVideoDbOut
+  }
+  
+  database "Video Database" as db
+  
+  client -> server
+  server -> db
+  
+  interface "IVideoService" as IVideoServiceIn
+  IVideoServiceIn <.. [VideoController]
+  IVideoServiceIn <.. [VideoService] 
+  
+  IVideoDbOut ..> [VideoService]
+
+  note "IVideoService provides upload()\nedit() and delete() interfaces" as note1
+  note1 .. IVideoServiceIn
+  
+}
+
+node "External Libraries" {
+  component [AWS S3] <<library>>
+  component [FFmpeg] <<library>>
+}
+
+server ..> [AWS S3]
+server ..> [FFmpeg]
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!define ACTIVITY activity
+!define ARROW -->
+!define NOTE note
+
+|Collaboration Activity Diagram|
+start
+
+:User uploads video;
+if (Video Valid?) then (Yes)
+  :Enable Sharing Option;
+else (No)
+  :Display Error Message;
+  stop
+endif
+
+fork
+  :User shares video with other users;
+  if (Users Authorized?) then (Yes)
+    :Notify Users;
+    NOTE: Collaboration initiated successfully.
+  else (No)
+    :Display Access Denied Message;
+    NOTE: Collaboration denied due to authorization restrictions.
+    stop
+  endif
+fork again
+  :Collaborative Discussion;
+  NOTE: Team members collaborate, share ideas, and exchange knowledge related to the shared video content.
+  :Teamwork and Knowledge Sharing;
+fork end
+
+:Collaboration Completed;
+NOTE: Successful collaboration results in shared insights, enhanced teamwork, and effective knowledge dissemination.
+stop
+@enduml

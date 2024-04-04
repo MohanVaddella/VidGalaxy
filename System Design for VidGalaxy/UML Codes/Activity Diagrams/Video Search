@@ -1,0 +1,48 @@
+@startuml
+start
+
+:User accesses search system;
+:Enter keywords or video title;
+
+if (Is user logged in?) then (yes)
+  fork
+    :Search in available categories;
+  fork again
+    :Display available results;
+  fork end
+  
+  if (Results found?) then (yes)
+    :Display specific results;
+    :Select video for details;
+  stop
+  else (no)
+    :Display no results message;
+    stop
+  endif
+else (no)
+  :Ask user to log in;
+  stop
+endif
+
+note right
+  Object: SearchBar
+  Attributes:
+  - queryText
+  - searchButton
+end note
+
+note right
+  Object: Database
+  Attributes:
+  - videos
+  - categories
+end note
+
+note right
+  Object: SearchResult
+  Attributes:
+  - videoTitle
+  - videoDescription
+  - videoThumbnail
+end note
+@enduml

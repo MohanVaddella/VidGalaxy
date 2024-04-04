@@ -1,0 +1,37 @@
+@startuml
+
+cloud "Cloud Platform" {
+
+node "Model Server" as model {
+component [Classifier] as classifier
+
+}
+
+node "Database Server" as db {
+database "Genre DB" as genres
+database "Video DB" as videos
+
+}
+
+node "Web Server" as web {
+component [Web App] as app
+}
+
+}
+
+node "Client Machine" as client {
+component [Browser] as browser
+}
+
+model .[#green].> db : SQL
+classifier .[#green].> genres : CRUD Genres
+classifier .[#green].> videos : Read Videos
+
+web .[#blue].> db : SQL
+app .[#blue].> genres : Read Genres
+app .[#blue].> videos : CRUD Videos
+
+client .[#black].> web : HTTPS
+browser .[#black].> app : REST API
+
+@enduml

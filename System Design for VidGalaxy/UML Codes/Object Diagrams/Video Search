@@ -1,0 +1,44 @@
+@startuml
+!define OBJECT object
+
+OBJECT isroUser1 {
+  isroUserId: 101
+  isroUserRole: "Searcher"
+  searchVideo(): "Mars Mission"
+  viewStats(): "Viewed"
+  shareVideo(): "Shared"
+}
+
+OBJECT generalUser1 {
+  generalUserId: 201
+  searchVideo(): "Mars Mission"
+  viewVideoContent(): "Viewed"
+}
+
+OBJECT iVideoManagement1 {
+  uploadVideo: "Uploaded"
+  editMetadata: "Edited"
+  deleteVideo: "Not Deleted"
+}
+
+OBJECT video1 {
+  videoId: 1001
+  title: "Mars Mission"
+  description: "Documentary on Mars Mission"
+  genre: "Documentary"
+  filePath: "/videos/mars_mission.mp4"
+  play(): "Played"
+}
+
+OBJECT database1 {
+  users: [isroUser1, generalUser1]
+  videos: [video1]
+  getUserById(): "Retrieved"
+  getVideoById(): "Retrieved"
+}
+
+isroUser1 --> iVideoManagement1: realizes
+generalUser1 --> database1: uses
+isroUser1 --> database1: uses
+video1 --> database1: storedIn
+@enduml

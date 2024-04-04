@@ -1,0 +1,31 @@
+@startuml
+node "Client Machine" as client {
+component [Browser] as browser
+}
+
+cloud "Cloud Platform" {
+
+node "API Gateway" as api {
+component [API] as gateway
+}
+
+node "Search Server" as search {
+component [Search Engine] as engine
+database "Video Index" as index
+}
+
+node "Database Server" as db {
+database "Video Metadata DB" as metadata
+}
+
+}
+
+client .[#green].> api : HTTPS
+browser .[#green].> gateway : REST API
+
+api .[#blue].> search : Internal API
+gateway .[#blue].> engine : Query
+
+engine .[#orange].> index : Lookup
+engine .[#orange].> metadata : Fetch Metadata
+@enduml

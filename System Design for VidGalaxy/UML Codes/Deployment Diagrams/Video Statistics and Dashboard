@@ -1,0 +1,40 @@
+@startuml
+
+cloud "Cloud Platform" {
+
+node "Web Server" as web {
+component [Web App] as app
+}
+
+node "API Server" as api {
+component [API] as gateway
+}
+
+}
+
+node "Client Machine" as client {
+component [Browser] as browser
+}
+
+node "Analytics Server" as analytics {
+component [Analytics Engine] as engine
+database "Aggregated Data" as db
+}
+
+node "Database Server" as dbserver {
+database "Video Database" as videodb
+}
+
+client .[#green].> web : HTTPS
+browser .[#green].> app : Call Dashboard
+
+web .[#blue].> api : Internal API
+app .[#blue].> gateway : Get Statistics
+
+api .[#orange].> analytics : Query Analytics
+gateway .[#orange].> engine : REST API
+
+engine .[#black].> db : Read Aggregated Data
+engine .[#black].> videodb : Calculate Metrics
+
+@enduml

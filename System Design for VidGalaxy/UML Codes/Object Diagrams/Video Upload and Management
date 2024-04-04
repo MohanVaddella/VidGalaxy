@@ -1,0 +1,37 @@
+@startuml
+!define OBJECT object
+
+OBJECT isroUser1 {
+  isroUserId: 101
+  isroUserRole: "Uploader"
+}
+
+OBJECT database1 {
+  users: [isroUser1]
+  videos: [video1]
+  dataSynchronized: true
+}
+
+OBJECT video1 {
+  videoId: 1001
+  title: "Mars Mission"
+  description: "Documentary on Mars Mission"
+  genre: "Documentary"
+  filePath: "/videos/mars_mission.mp4"
+}
+
+OBJECT iVideoManagement1 {
+  uploadVideo: "Called"
+  editMetadata: "Not Called"
+  deleteVideo: "Not Called"
+}
+
+OBJECT iDataManagement1 {
+  synchronizeData: "Synchronized"
+}
+
+isroUser1 --> iVideoManagement1: realizes
+database1 --> iDataManagement1: includes
+isroUser1 --> video1: uploads
+video1 --> database1: storedIn
+@enduml

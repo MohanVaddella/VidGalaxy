@@ -1,0 +1,42 @@
+@startuml
+
+node "Client Machine" as client {
+  component [Video Player] as player
+}
+
+node "Web Server" as web {
+  component [Web Application] as app
+}
+
+node "API Server" as api {
+  component [APIs] as gateway
+  
+  database "Video Metadata" as metadb
+}
+
+cloud "CDN" {
+
+  node "Edge Server" as edge {
+    folder "Cache" as cache
+  }
+
+  node "Origin Server" as origin {
+    folder "Video Files" as videos
+  }  
+}
+
+web .[#green]> client : Serve Page
+app ..[#green]> player : Embed Video
+
+client .[#blue]> api : Get Video URL
+player ..[#blue]> gateway : Request Video
+
+gateway .[#orange]> metadb : Lookup Metadata 
+
+api .[#orange]> edge : Stream Video
+edge .[#orange]> cache : Cache Video
+
+edge .[#red]> origin : Cache Miss
+cache ..[#red]> videos : Get Video
+
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+start
+
+:User logs in;
+:Select video for upload;
+note right
+  Object: Video
+  Attributes:
+  - title
+  - description
+  - genre
+  - filePath
+end note
+
+fork
+  :Transfer video data;
+  :Video data transferred;
+  :Store video in database;
+      note right
+      Object: Database
+      Attributes:
+      - users
+      - videos
+end note
+  :Video stored successfully;
+  :Add metadata to vide;
+  :Metadata added successfully;
+fork again
+  :Verify user credentials;
+  note right
+  Object: User
+  Attributes:
+  - username
+  - password
+end note
+  :Credentials verified;
+  :Check storage availability;
+  :Storage available;
+end fork
+
+if (Any errors during upload?) then (yes)
+  :Display error message;
+  stop
+else (no)
+  :Manage video;
+
+  if (Edit video?) then (yes)
+    :Edit video metadata;
+    :Save changes;
+    :Return to Manage video;
+  else if (Delete video?) then (yes)
+    :Confirm deletion;
+    :Delete video from database;
+    
+  else (no)
+    :View video;
+     
+  endif
+endif
+
+stop
+
+@enduml

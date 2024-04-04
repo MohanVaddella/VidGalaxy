@@ -1,0 +1,42 @@
+@startuml
+!define OBJECT object
+!define NOTE note
+!define CONTROL control
+!define MESSAGE message
+
+OBJECT User
+OBJECT AuthenticationSystem
+OBJECT EmailService
+OBJECT NotificationSystem
+
+note right of User: Represents the end user attempting\nto register and log in to the system.
+note right of AuthenticationSystem: Manages user authentication,\nregistration, and login processes.
+note right of EmailService: Handles sending email\nnotifications, including verification emails.
+note right of NotificationSystem: Manages system notifications\nand user communication.
+
+User -> AuthenticationSystem: initiateRegistration()
+AuthenticationSystem -> User: registrationPage()
+
+User -> AuthenticationSystem: submitRegistrationDetails()
+AuthenticationSystem -> AuthenticationSystem: validateRegistrationDetails()
+
+AuthenticationSystem -> EmailService: sendVerificationEmail(code)
+EmailService -> User: EmailSentSuccess()
+
+User -> AuthenticationSystem: verifyEmail(code)
+AuthenticationSystem -> AuthenticationSystem: validateVerificationCode(code)
+
+User -> AuthenticationSystem: initiateLogin()
+AuthenticationSystem -> User: loginPage()
+
+User -> AuthenticationSystem: submitLoginCredentials()
+
+AuthenticationSystem -> AuthenticationSystem: authenticateUser()
+
+User -> NotificationSystem: requestNotificationService()
+
+NotificationSystem -> User: NotificationSentSuccess()
+
+User -> AuthenticationSystem: requestLogout()
+AuthenticationSystem -> AuthenticationSystem: logoutUser()
+@enduml

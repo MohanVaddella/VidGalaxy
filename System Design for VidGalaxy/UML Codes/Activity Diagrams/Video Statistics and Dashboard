@@ -1,0 +1,91 @@
+@startuml
+start
+
+:Access Dashboard;
+:View Dashboard Home;
+note right 
+  Object: Dashboard
+  Attributes:
+  - userId
+  - uploadedVideos
+  - classifiedVideos
+  - stats
+end note
+
+fork
+:Select Video Stats;
+fork again
+:View Genre Distribution;
+fork again
+:View User Engagement Metrics;
+fork end
+
+if (Selects Video Stats?) then (yes)
+  :Display Video Statistics;
+  note right 
+  Object: VideoStats
+  Attributes:
+  - viewCounts
+  - genreDistribution
+  - userEngagementMetrics
+end note
+else (no)
+  :Return to Dashboard Home;
+endif
+
+if (View Genre Distribution?) then (yes)
+  :Display Genre Distribution;
+else (no)
+  :Return to Video Statistics;
+endif
+
+if (View User Engagement Metrics?) then (yes)
+  :Display User Engagement Metrics;
+else (no)
+  :Return to Video Statistics;
+endif
+
+if (Selects Uploaded Videos?) then (yes)
+  :View List of Uploaded Videos;
+  note right 
+  Object: VideoList
+  Attributes:
+  - videoTitle
+  - videoDescription
+  - uploadDate
+end note
+  :Select Video for Details;
+  :Return to Dashboard Home;
+else (no)
+  :Return to Dashboard Home;
+endif
+
+if (Selects Classified Videos?) then (yes)
+  :View List of Classified Videos;
+  note right 
+  Object: ClassifiedList
+  Attributes:
+  - videoTitle
+  - videoDescription
+  - classifiedGenre
+end note
+  :Select Video for Details;
+  note right 
+  Object: VideoDetails
+  Attributes:
+  - videoTitle
+  - videoDescription
+  - videoThumbnail
+  - genre
+  - viewCounts
+end note
+  :Return to Dashboard Home;
+else (no)
+  :Return to Dashboard Home;
+endif
+
+stop
+
+
+
+@enduml

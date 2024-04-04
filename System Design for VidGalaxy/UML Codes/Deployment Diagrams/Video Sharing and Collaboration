@@ -1,0 +1,43 @@
+@startuml
+
+node "Client Machine" as client {
+  component [Video Editor] as editor
+}
+
+node "Web Server" as web {
+  component [Web Application] as app
+}
+
+node "Database Server" as db {
+  database "Videos DB" as videodb
+  database "Users DB" as usersdb
+}
+
+node "File Server" as storage {
+  folder "Video Files" as videos
+  folder "Thumbnails" as thumbs
+} 
+
+cloud "CDN" as cdn {
+  storage "Cache Servers" as cache
+}
+
+client .> web : Upload Video
+editor .> app : Upload Request
+
+web .> videodb : Save Video Metadata 
+app ..> videodb : CRUD operations
+
+web .> storage : Save Video File
+app ..> videos : Read/Write Video
+
+web .> usersdb : Lookup User
+app ..> usersdb : CRUD operations  
+
+storage .> thumbs : Generate Thumbnails
+videos .> thumbs : Read Video
+
+web .> cdn : Cache Content
+cdn .> cache : Save Files
+
+@enduml

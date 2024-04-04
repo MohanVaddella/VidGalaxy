@@ -1,0 +1,57 @@
+@startuml
+!define OBJECT object
+!define NOTE note
+!define CONTROL control
+!define MESSAGE message
+
+OBJECT User
+note right: Represents the end user who\nuploads and manages videos.
+OBJECT VideoUploadSystem
+note right: Manages video upload and\nstorage mechanisms.
+OBJECT VideoManagementSystem
+note right: Handles video organization,\nediting, and retrieval functionalities.
+OBJECT Database
+note right: Responsible for efficient\nstorage and retrieval of videos.
+OBJECT NotificationSystem
+note right: Sends notifications to users\nregarding upload status and events.
+
+
+  User -> VideoUploadSystem: initiateVideoUpload();
+  VideoUploadSystem -> User: uploadPage();
+
+
+
+  User -> VideoUploadSystem: submitVideoDetails()
+  VideoUploadSystem -> VideoUploadSystem: validateVideoDetails()
+  VideoUploadSystem -> VideoUploadSystem: generateThumbnail()
+  VideoUploadSystem -> VideoUploadSystem: storeVideo()
+  VideoUploadSystem -> Database: saveVideoDetails()
+
+  VideoManagementSystem -> User: UploadSuccess()
+
+
+
+  User -> VideoManagementSystem: initiateVideoManagement()
+  VideoManagementSystem -> User: managementPage()
+
+
+
+  User -> VideoManagementSystem: editVideoDetails()
+  VideoManagementSystem -> VideoManagementSystem: validateEditedDetails()
+  VideoManagementSystem -> Database: updateVideoDetails()
+
+  VideoManagementSystem -> User: EditSuccess()
+
+
+
+  User -> VideoManagementSystem: deleteVideo()
+  VideoManagementSystem -> Database: deleteVideoRecord()
+
+  VideoManagementSystem -> User: DeleteSuccess()
+
+
+
+  User -> NotificationSystem: requestUploadNotification()
+  NotificationSystem -> NotificationSystem: processUploadNotificationRequest()
+  NotificationSystem -> User: UploadNotificationSent()
+@enduml

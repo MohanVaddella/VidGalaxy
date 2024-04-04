@@ -1,0 +1,78 @@
+@startuml
+' Define the states
+state "Video Dashboard System" as VDS {
+
+  ' Initial State
+  [*] --> DashboardHome
+
+  state DashboardHome {
+    entry: "Display Dashboard Home"
+    DashboardHome --> VideoStats: UserViewsStats
+    DashboardHome --> VideoList: UserViewsUploadedVideos
+    DashboardHome --> ClassifiedList: UserViewsClassifiedVideos
+  }
+
+  state VideoStats {
+    entry: "Display Video Statistics"
+    VideoStats --> GenreDistribution: UserViewsGenreDistribution
+    VideoStats --> UserEngagement: UserViewsEngagementMetrics
+    VideoStats --> DashboardHome: ReturnToDashboard
+  }
+
+  state GenreDistribution {
+    entry: "Display Genre Distribution"
+    GenreDistribution --> DashboardHome: ReturnToDashboard
+  }
+
+  state UserEngagement {
+    entry: "Display User Engagement Metrics"
+    UserEngagement --> DashboardHome: ReturnToDashboard
+  }
+
+  state VideoList {
+    entry: "Display List of Uploaded Videos"
+    VideoList --> VideoDetails: UserSelectsVideo
+    VideoList --> DashboardHome: ReturnToDashboard
+  }
+
+  state ClassifiedList {
+    entry: "Display List of Classified Videos"
+    ClassifiedList --> VideoDetails: UserSelectsVideo
+    ClassifiedList --> DashboardHome: ReturnToDashboard
+  }
+
+  state VideoDetails {
+    entry: "Display Video Details"
+    VideoDetails --> DashboardHome: ReturnToDashboard
+  }
+
+  ' Final State
+  state Exit {
+    entry: "User Exits Dashboard"
+  }
+
+  ' Define the transitions
+  DashboardHome --> Exit: UserExits
+  VideoStats --> Exit: UserExits
+  GenreDistribution --> Exit: UserExits
+  UserEngagement --> Exit: UserExits
+  VideoList --> Exit: UserExits
+  ClassifiedList --> Exit: UserExits
+  VideoDetails --> Exit: UserExits
+
+  ' Action States
+  state "Load Video Data" as LoadData {
+    entry: "Fetching Video Data from Database"
+    exit: "Data Loaded"
+  }
+
+  state "Analyze Video Data" as AnalyzeData {
+    entry: "Start Analyzing"
+    exit: "Data Analyzed"
+  }
+
+  ' Activity States
+  state "User Browsing Activity" as UserBrowsing {
+    do: "User Browsing Through Dashboard"
+  }
+@enduml

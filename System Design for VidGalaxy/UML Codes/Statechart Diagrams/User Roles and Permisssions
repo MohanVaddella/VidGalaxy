@@ -1,0 +1,48 @@
+@startuml
+!define STATE state
+
+STATE "System" as system {
+  STATE "Initial State" as initial
+  STATE "User" as user {
+    STATE "Login" as login
+    STATE "Logged In" as loggedIn {
+      STATE "Admin" as admin {
+        STATE "Manage Users" as manageUsers
+        STATE "View Stats" as viewStats
+      }
+      STATE "ISRO User" as isroUser {
+        STATE "Upload Video" as uploadVideo
+        STATE "Classify Video" as classifyVideo
+      }
+      STATE "General User" as generalUser {
+        STATE "View Video" as viewVideo
+        STATE "Search Video" as searchVideo
+      }
+      STATE "History" as history <<H>>
+    }
+    STATE "Logout" as logout
+    STATE "Final State" as final
+  }
+  
+  initial --> login: Start
+  login --> loggedIn: Successful Login
+  loggedIn --> logout: Logout
+  logout --> final: End
+  
+  loggedIn --> history: Go to Last State
+  history --> loggedIn: Return to Last State
+  
+  loggedIn --> admin: Switch to Admin
+  loggedIn --> isroUser: Switch to ISRO User
+  loggedIn --> generalUser: Switch to General User
+  
+  admin --> manageUsers: Manage Users
+  admin --> viewStats: View Statistics
+  
+  isroUser --> uploadVideo: Upload Video
+  isroUser --> classifyVideo: Classify Video
+  
+  generalUser --> viewVideo: View Video
+  generalUser --> searchVideo: Search Video
+}
+@enduml

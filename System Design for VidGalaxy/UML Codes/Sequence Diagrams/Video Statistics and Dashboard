@@ -1,0 +1,50 @@
+@startuml
+participant "user1: User" as User
+participant "isroUser1: ISROUser" as ISROUser
+participant "dashboard1: Dashboard" as Dashboard
+participant "database1: Database" as Database
+participant "iDataManagement1: IDataManagement" as IDataManagement
+
+activate User
+User -> ISROUser: classifyVideo("Educational")
+activate ISROUser
+User <-- ISROUser: "Classified as Educational"
+deactivate ISROUser
+
+User -> ISROUser: searchVideo("Mars Mission")
+activate ISROUser
+ISROUser -> Database: getVideoById("Mars Mission")
+activate Database
+ISROUser <-- Database: "Retrieved Mars Mission"
+deactivate Database
+User <-- ISROUser: "Mars Mission"
+deactivate ISROUser
+
+User -> Dashboard: viewUploadedVideos()
+activate Dashboard
+User <-- Dashboard: "Mars Mission, Moon Mission"
+deactivate Dashboard
+
+User -> Dashboard: viewClassifiedVideos()
+activate Dashboard
+User <-- Dashboard: "Educational, Documentary"
+deactivate Dashboard
+
+User -> Dashboard: viewStats()
+activate Dashboard
+User <-- Dashboard: "Views: 1000, Genre Distribution: 50% Educational, 50% Documentary"
+deactivate Dashboard
+
+User -> Database: updateUser()
+activate Database
+User <-- Database: true
+
+deactivate User
+
+Database -> IDataManagement: synchronizeData()
+activate IDataManagement
+Database <-- IDataManagement: true
+deactivate IDataManagement
+deactivate Database
+
+@enduml

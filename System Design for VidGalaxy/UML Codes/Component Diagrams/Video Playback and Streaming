@@ -1,0 +1,39 @@
+@startuml
+
+package "Video Playback" {
+
+  component [ClientApp] <<executable>> as client {
+    component [VideoPlayer] <<document>>
+  }
+  
+  component [WebServer] <<executable>> as server {
+    component [StreamingController] <<executable>>
+    component [StreamingService] <<executable>>
+    interface [IVideoStorage] as IVideoStorageOut
+  }
+
+  storage "Cloud Storage" as storage
+  
+  client -> server
+  server -> storage
+
+  interface "IStreamingService" as IStreamingServiceIn 
+  IStreamingServiceIn <.. [StreamingController]
+  IStreamingServiceIn <.. [StreamingService]
+
+  IVideoStorageOut ..> [StreamingService]
+
+  note "IStreamingService provides\nvideo streaming interfaces" as note1
+  note1 .. IStreamingServiceIn
+
+}
+
+node "External Libraries" {
+  component [VideoJS] <<library>>
+  component [HLS.js] <<library>>
+}
+
+client ..> [VideoJS]
+client ..> [HLS.js]
+
+@enduml

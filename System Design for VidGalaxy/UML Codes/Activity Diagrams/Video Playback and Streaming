@@ -1,0 +1,46 @@
+@startuml
+!define ACTIVITY activity
+!define ARROW -->
+!define FORK fork
+!define JOIN join
+!define NOTE note
+
+|Video Playback and Streaming Activity Diagram|
+
+start
+NOTE: User initiates video playback by requesting "Mars Mission" video.
+
+:User requests video "Mars Mission";
+if (Video Available?) then (Yes)
+  :Load Video;
+  fork
+    :Buffer Video;
+    NOTE: Video buffering ensures seamless playback experience.
+  fork again
+    :Initiate Video Playback;
+  fork end
+  if (Video Playing?) then (Yes)
+    :Display Video;
+  else (No)
+    :Display Error Message;
+    NOTE: Error message displayed if video playback fails.
+    stop
+  endif
+else (No)
+  :Display Not Found Message;
+  NOTE: Message shown if the requested video is not found.
+  stop
+endif
+
+fork
+  :User interacts with Video Controls;
+  NOTE: User can control playback, pause, and adjust volume.
+fork again
+  :Video Buffers;
+  NOTE: Buffering ensures continuous playback without interruptions.
+fork end
+
+:Video Playback Completed;
+NOTE: Successful video playback concludes the streaming process.
+stop
+@enduml

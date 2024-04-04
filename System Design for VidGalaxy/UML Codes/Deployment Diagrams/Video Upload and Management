@@ -1,0 +1,32 @@
+@startuml
+node "Client Machine" as client {
+database "Local Storage" as storage
+component [Upload Client] as uploader
+
+}
+
+cloud "Cloud Storage" as cloud {
+database "Video Repository" as repo
+component [Video Processing] as processor
+}
+
+node "Metadata Server" as metadata {
+database "Metadata DB" as metadb
+component [Metadata Service] as metaservice
+}
+
+node "API Gateway" as gateway {
+component [API] as api
+}
+
+client .[#green].> cloud : Upload Video
+uploader .[#green].> processor : Video Stream
+
+cloud .[#blue].> metadata : Add Metadata
+processor .[#blue].> metaservice : Metadata
+metaservice .[#orange].> metadb : CRUD
+
+client .[#black].> gateway : REST API
+gateway .[#black].> cloud : Forward Request
+
+@enduml

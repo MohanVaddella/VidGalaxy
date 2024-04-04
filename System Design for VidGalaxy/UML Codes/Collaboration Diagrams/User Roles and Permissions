@@ -1,0 +1,39 @@
+@startuml
+
+!define OBJECT object
+!define NOTE note
+!define MESSAGE message
+
+OBJECT User
+OBJECT Admin
+OBJECT ISROUser
+OBJECT GeneralUser
+OBJECT Authentication
+OBJECT Notification
+
+note right of User: Base user class
+note right of Admin: Has elevated privileges
+note right of ISROUser: Can manage videos
+note right of GeneralUser: Basic access
+note right of Authentication: Handles login/logout
+note right of Notification: Sends notifications
+
+User -> Authentication: register()
+Authentication -> User: registrationSuccess()
+
+User -> Authentication: login()
+Authentication -> User: loginSuccess()
+
+Admin -> Notification: sendNotification()
+Notification -> Admin: notificationSent()
+
+ISROUser -> ISROUser: classifyVideo()
+
+
+GeneralUser -> GeneralUser: viewVideo()
+
+
+User -> Authentication: logout()
+Authentication -> User: logoutSuccess()
+
+@enduml

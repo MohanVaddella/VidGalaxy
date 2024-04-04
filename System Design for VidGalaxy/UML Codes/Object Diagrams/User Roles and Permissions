@@ -1,0 +1,60 @@
+@startuml
+!define OBJECT object
+
+OBJECT user1 {
+  userId: 1
+  firstName: "John"
+  lastName: "Doe"
+  email: "john.doe@example.com"
+  phoneNumber: "123-456-7890"
+  username: "johndoe"
+  password: "password"
+  profilePicture: "image.jpg"
+  authenticated: true
+  registrationDate: "2023-09-29"
+}
+
+OBJECT iAuthentication1 {
+  register(): true
+  login(): true
+  logout(): true
+}
+
+OBJECT admin1 {
+  adminId: 101
+  adminName: "Admin John"
+  viewUserStats(): "Total Users: 100, Active: 80, Inactive: 20"
+}
+
+OBJECT isroUser1 {
+  isroUserId: 102
+  isroUserRole: "Uploader"
+  classifyVideo(): "Educational"
+  searchVideo(): "Mars Mission"
+  viewStats(): "Viewed"
+  shareVideo(): "Shared"
+}
+
+OBJECT generalUser1 {
+  generalUserId: 103
+  searchVideo(): "Moon Mission"
+  viewVideoContent(): "Viewed Moon Mission"
+}
+
+OBJECT notification1 {
+  notificationID: 1
+  message: "New Video Uploaded: Mars Mission"
+  users: [user1, admin1, isroUser1, generalUser1]
+}
+
+OBJECT iNotificationManagement1 {
+  sendNotification(): true
+}
+
+user1 --> iAuthentication1: realizes
+user1 --|> admin1: Inheritance {leaf}
+user1 --|> isroUser1: Inheritance {leaf}
+user1 --|> generalUser1: Inheritance {leaf}
+user1 --> notification1: Receives
+admin1 --> iNotificationManagement1: realizes
+@enduml

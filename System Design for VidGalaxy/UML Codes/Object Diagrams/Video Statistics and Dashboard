@@ -1,0 +1,53 @@
+@startuml
+!define OBJECT object
+
+OBJECT user1 {
+  userId: 1
+  firstName: "John"
+  lastName: "Doe"
+  email: "john.doe@example.com"
+  phoneNumber: "123-456-7890"
+  username: "johndoe"
+  password: "password"
+  profilePicture: "image.jpg"
+  authenticated: true
+  registrationDate: "2023-09-29"
+}
+
+OBJECT isroUser1 {
+  isroUserId: 101
+  isroUserRole: "Uploader"
+  classifyVideo(): "Educational"
+  searchVideo(): "Mars Mission"
+  viewStats(): "Viewed"
+  shareVideo(): "Shared"
+}
+
+OBJECT dashboard1 {
+  userId: 1
+  viewUploadedVideos(): "Mars Mission, Moon Mission"
+  viewClassifiedVideos(): "Educational, Documentary"
+  viewStats(): "Views: 1000, Genre Distribution: 50% Educational, 50% Documentary"
+}
+
+OBJECT database1 {
+  users: [user1, isroUser1]
+  videos: ["Mars Mission", "Moon Mission"]
+  addUser(): true
+  getUserById(): "Retrieved user1"
+  addVideo(): true
+  getVideoById(): "Retrieved Mars Mission"
+  updateUser(): true
+  updateVideo(): true
+}
+
+OBJECT iDataManagement1 {
+  synchronizeData(): true
+}
+
+user1 --> isroUser1: Inheritance {leaf}
+user1 --> dashboard1: Views
+isroUser1 --> database1: Uses
+dashboard1 --> database1: Uses
+database1 --> iDataManagement1: includes
+@enduml

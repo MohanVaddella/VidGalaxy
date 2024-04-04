@@ -1,0 +1,35 @@
+@startuml
+!define STATE state
+
+[*] --> InitialState
+STATE InitialState {
+  [*] --> NoVideoShared
+
+  STATE NoVideoShared: No video shared
+  NoVideoShared --> VideoShared: Share Video
+  NoVideoShared --> VideoDeleted: Delete Video
+
+  STATE VideoShared: Video shared with collaborators
+  VideoShared --> VideoViewed: View Video
+  VideoShared --> VideoEdited: Edit Video
+  VideoShared --> VideoDeleted: Delete Video
+
+  STATE VideoViewed: Video viewed by collaborator
+  VideoViewed --> VideoCommented: Comment on Video
+  VideoViewed --> VideoShared: Share Video
+
+  STATE VideoEdited: Video metadata edited
+  VideoEdited --> VideoShared: Share Edited Video
+
+  STATE VideoCommented: Comment added by collaborator
+  VideoCommented --> VideoShared: Share Video with Comment
+
+  STATE VideoDeleted: Video removed from system
+  VideoDeleted --> NoVideoShared: Share New Video
+}
+
+VideoShared --> FinalState: End Collaboration
+VideoDeleted --> FinalState: End Collaboration
+
+STATE FinalState: Collaboration Ended
+@enduml

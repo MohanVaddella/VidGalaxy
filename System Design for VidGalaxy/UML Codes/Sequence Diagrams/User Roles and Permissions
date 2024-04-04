@@ -1,0 +1,77 @@
+@startuml
+!define ACTOR actor
+
+ACTOR "User\n(user1)" as user
+ACTOR "Admin\n(admin1)" as admin
+ACTOR "ISROUser\n(isroUser1)" as isroUser
+ACTOR "GeneralUser\n(generalUser1)" as generalUser
+participant "IAuthentication\n(iAuthentication1)" as auth
+participant "INotificationManagement\n(iNotificationManagement1)" as notif
+participant "Database" as db
+
+
+user -> auth: register()
+activate auth
+activate user
+auth --> user: Registration Successful (true)
+deactivate auth
+
+user -> auth: login()
+activate auth
+auth --> user: Login Successful (true)
+deactivate auth
+deactivate user
+
+
+admin -> admin: viewUserStats()
+activate admin
+admin --> admin: "Total Users: 100\nActive: 80\nInactive: 20"
+deactivate admin
+
+
+isroUser -> isroUser: classifyVideo()
+activate isroUser
+isroUser --> isroUser: Video Classified as "Educational"
+deactivate isroUser
+
+isroUser -> isroUser: shareVideo()
+activate isroUser
+isroUser --> isroUser: Video Shared Successfully (true)
+deactivate isroUser
+
+
+generalUser -> generalUser: viewVideoContent()
+activate generalUser
+generalUser --> generalUser: "Viewed Moon Mission"
+deactivate generalUser
+
+
+admin -> notif: sendNotification("New Video Uploaded: Mars Mission")
+activate notif
+activate admin
+notif --> admin: Notification Sent Successfully (true)
+deactivate admin
+
+
+notif -> user: "New Video Uploaded: Mars Mission"
+activate user
+user --> notif: Notification Acknowledged
+deactivate user
+notif -> isroUser: "New Video Uploaded: Mars Mission"
+activate isroUser
+isroUser --> notif: Notification Acknowledged
+deactivate isroUser
+notif -> generalUser: "New Video Uploaded: Mars Mission"
+activate generalUser
+generalUser --> notif: Notification Acknowledged
+deactivate generalUser
+deactivate notif
+
+
+user -> auth: logout()
+activate auth
+activate user
+auth --> user: Logout Successful (true)
+deactivate auth
+deactivate user
+@enduml

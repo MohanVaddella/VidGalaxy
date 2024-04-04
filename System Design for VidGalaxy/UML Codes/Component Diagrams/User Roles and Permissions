@@ -1,0 +1,38 @@
+@startuml
+
+package "User Management" {
+
+  component [ClientApp] <<executable>> as client {
+    component [LoginUI] <<document>>
+    component [UserSettingsUI] <<document>>
+  }
+
+  component [WebServer] <<executable>> as server {
+    component [UserController] <<executable>>
+    component [RoleService] <<executable>>
+    interface [IRoleDatabase] as IRoleDbOut
+  }
+
+  database "User Database" as db
+
+  client -> server
+  server -> db
+
+  interface "IRoleService" as IRoleServiceIn
+  IRoleServiceIn <.. [UserController]
+  IRoleServiceIn <.. [RoleService]
+
+  IRoleDbOut ..> [RoleService]
+
+  note "IRoleService provides role\nassignment interfaces" as note1
+  note1 .. IRoleServiceIn
+
+}
+
+node "External Libraries" {
+  component [JWT] <<library>>
+} 
+
+server ..> [JWT]
+
+@enduml

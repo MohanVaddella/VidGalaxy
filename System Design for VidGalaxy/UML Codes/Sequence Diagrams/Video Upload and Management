@@ -1,0 +1,51 @@
+@startuml
+!define ACTOR actor
+
+ACTOR ISROUser as isroUser
+participant "isroUser1: ISROUser" as isroUser1
+participant "iVideoManagement1: IVideoManagement" as iVideoManagement1
+participant "video1: Video" as video1
+participant "database1: Database" as database1
+participant "iDataManagement1: IDataManagement" as iDataManagement1
+
+isroUser -> isroUser1: login()
+activate isroUser1
+
+isroUser -> isroUser1: selectVideo("Mars Mission", "/videos/mars_mission.mp4")
+
+
+isroUser1 -> iVideoManagement1: uploadVideo()
+activate iVideoManagement1
+
+iVideoManagement1 -> video1: create("Mars Mission", "Documentary on Mars Mission", "Documentary")
+activate video1
+
+video1 --> iVideoManagement1: VideoCreated
+deactivate video1
+
+iVideoManagement1 -> database1: addVideo(video1)
+activate database1
+
+database1 --> iVideoManagement1: VideoAdded
+deactivate database1
+
+
+iVideoManagement1 --> isroUser1: UploadSuccess
+deactivate iVideoManagement1
+
+isroUser1 -> iDataManagement1: synchronizeData()
+
+activate iDataManagement1
+
+iDataManagement1 -> database1: synchronize()
+activate database1
+
+database1 --> iDataManagement1: DataSynchronized
+deactivate database1
+
+iDataManagement1 --> isroUser1: SynchronizationSuccess
+deactivate iDataManagement1
+
+
+deactivate isroUser1
+@enduml

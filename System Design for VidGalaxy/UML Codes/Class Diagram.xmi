@@ -1,0 +1,144 @@
+@startuml
+!define RECTANGLE class
+!define INTERFACE interface
+
+INTERFACE IAuthentication {
+  + {abstract} register(): bool
+  + {abstract} login(): bool
+  + {abstract} logout(): bool
+}
+
+INTERFACE IVideoManagement {
+  + {abstract} uploadVideo(): Video
+  + {abstract} editMetadata(): bool
+  + {abstract} deleteVideo(): bool
+}
+
+INTERFACE IUserManagement {
+  + {abstract} manageUsers(): List<User>
+  + {abstract} sendInvitation(): bool
+  + {abstract} deleteUser(): bool
+}
+
+INTERFACE IDataManagement {
+  + {abstract} synchronizeData(): bool
+}
+
+INTERFACE INotificationManagement {
+  + {abstract} sendNotification(): bool
+}
+
+RECTANGLE User {
+  #userId: int
+  #firstName: String
+  #lastName: String
+  #email: String
+  #phoneNumber: String
+  -username: String
+  -password: String
+  #profilePicture: Image
+  #authenticated: bool
+  -registrationDate: Date
+  +forgotPassword(): void
+  +changePassword(): bool
+  +viewProfile(): Profile
+}
+
+RECTANGLE Admin << (A,#FF7700) >> {
+  -adminId: int
+  +adminName: String
+  +viewUserStats(): Stats
+}
+
+RECTANGLE ISROUser {
+  -isroUserId: int
+  #isroUserRole: String
+  +classifyVideo(): Genre
+  +searchVideo(): List<Video>
+  +viewStats(): Stats
+  +shareVideo(): bool
+}
+
+RECTANGLE GeneralUser {
+  -generalUserId: int
+  +searchVideo(): List<Video>
+  +viewVideoContent(): Video
+}
+
+RECTANGLE Video {
+  -videoId: int
+  #title: String
+  #description: String
+  #genre: Genre
+  #filePath: String
+  -metadata: Metadata
+  +play(): void
+}
+
+RECTANGLE Database {
+  +addUser(): bool
+  +getUserById(): User
+  +addVideo(): bool
+  +getVideoById(): Video
+  +updateUser(): bool
+  +updateVideo(): bool
+}
+
+RECTANGLE Dashboard {
+  -userId: int
+  +viewUploadedVideos(): List<Video>
+  +viewClassifiedVideos(): List<VideoClassification>
+  +viewStats(): Stats
+}
+
+RECTANGLE VideoClassification {
+  -classificationId: int
+  -video: Video
+  -userId: int
+  -selectedGenre: Genre
+  +getRecommendedVideos(): List<Video>
+}
+
+RECTANGLE Genre {
+  -genreId: int
+  +name: String
+  +addGenre(): bool
+  +editGenre(): bool
+  +deleteGenre(): bool
+}
+
+RECTANGLE Metadata {
+  -title: String
+  -description: String
+  -timestamps: String
+  -duration: int
+  -tags: List<String>
+  -keywords: List<String>
+  +generateMetadata(): Metadata
+}
+
+RECTANGLE Notification {
+  -notificationID: int
+  -message: String
+  -users: User[*]
+}
+
+User --|> Admin: Inheritance {leaf}
+User --|> ISROUser: Inheritance {leaf}
+User --|> GeneralUser: Inheritance {leaf}
+User --|> IAuthentication: realizes
+Admin --|> IUserManagement: realizes
+ISROUser --|> IVideoManagement: realizes
+GeneralUser --> Database: Uses
+Video --> Database: Uses
+Dashboard --> Database: Uses
+User "1" --> "0..1" Dashboard: Views
+User "1" --> "0..*" VideoClassification: Creates
+User "1" --> "0..*" Notification: Receives
+ISROUser "1" --> "0..*" Video: Uploads
+Video "1" --> "1" Metadata: Contains
+VideoClassification "0..*" --> "1" Genre: Classifies
+Video "1" --> "0..*" Genre: Belongs to
+Database ..> IDataManagement: includes
+Notification ..> INotificationManagement: includes
+@enduml

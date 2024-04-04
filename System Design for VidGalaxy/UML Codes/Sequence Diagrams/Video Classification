@@ -1,0 +1,45 @@
+@startuml
+!define ACTOR actor
+
+ACTOR IsroUser
+participant "isroUser1: ISROUser" as ISROUser
+participant "video1: Video" as Video
+participant "genre1: Genre" as Genre
+participant "metadata1: Metadata" as Metadata
+participant "videoClassification1: VideoClassification" as VideoClassification
+participant "database1: Database" as Database
+participant "iDataManagement1: IDataManagement" as IDataManagement
+
+IsroUser -> ISROUser: classifyVideo(video1)
+activate ISROUser
+
+ISROUser -> VideoClassification: createClassification(genre1)
+activate VideoClassification
+deactivate ISROUser
+
+VideoClassification -> Video: setGenre(genre1)
+activate Video
+deactivate VideoClassification
+
+Video -> Genre: assignGenre()
+activate Genre
+deactivate Genre
+
+Video -> Metadata: generateMetadata()
+activate Metadata
+deactivate Metadata
+deactivate Video
+activate VideoClassification
+VideoClassification -> Database: storeClassification()
+activate Database
+deactivate VideoClassification
+
+Database -> IDataManagement: synchronizeData()
+activate IDataManagement
+deactivate IDataManagement
+
+deactivate Database
+
+
+
+@enduml

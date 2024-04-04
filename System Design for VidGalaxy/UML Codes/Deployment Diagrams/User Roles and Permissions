@@ -1,0 +1,37 @@
+@startuml
+
+node "Client Machine" as client {
+component [Browser] as browser
+}
+
+node "Web Server" as web {
+component [Web App] as app
+}
+
+cloud "Cloud Platform" {
+
+node "API Gateway" as api {
+component [API] as gateway
+}
+
+node "User Management\nServer" as usermgmt {
+
+database "User Database" as db
+component [Role Manager] as manager
+}
+
+}
+
+client .[#green].> web : HTTPS
+browser .[#green].> app : UI Requests
+
+web .[#blue].> api : Internal APIs
+
+app .[#blue].> gateway : REST API
+
+gateway .[#orange].> usermgmt : Get User Role
+api .[#orange].> manager : Lookup Role
+
+manager .[#black].> db : Read User Data
+
+@enduml
